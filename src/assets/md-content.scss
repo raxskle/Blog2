@@ -1,0 +1,211 @@
+.md-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  overflow: hidden;
+}
+
+.md-content h1,
+h2,
+h3,
+h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 5px;
+  padding-left: 18px;
+  padding-right: 20px;
+
+  border-left: solid 5px rgb(233, 94, 94);
+  // font-weight: 500;
+
+  // transition: all 0.5s;
+}
+
+.md-content h1,
+.md-content h2 {
+  font-size: 20px;
+  width: 80%;
+  font-family: "NOTO SERIF SC";
+  // font-family: "NOTO SERIF SC SEMIBOLD";
+  font-weight: 900;
+  position: relative;
+  padding-left: 24px;
+  @media screen and (max-width: 800px) {
+    width: 80%;
+  }
+  &:hover {
+    &::before {
+      content: "#";
+      position: absolute;
+      left: 4px;
+    }
+  }
+}
+
+.md-content h3,
+.md-content h4 {
+  font-size: 18px;
+  width: 80%;
+  position: relative;
+  padding-left: 28px;
+  &:hover {
+    &::before {
+      content: "##";
+      position: absolute;
+      left: 4px;
+    }
+  }
+}
+
+.md-content h5,
+.md-content h6 {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  font-weight: bold;
+  font-weight: 900;
+  font-family: "NOTO SERIF SC";
+  // font-family: "NOTO SERIF SC SEMIBOLD";
+}
+
+.md-content p {
+  font-size: 16px;
+  width: fit-content;
+  min-width: none;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.md-content hr {
+  height: 5px;
+  width: 100%;
+  padding: 0;
+
+  border: none;
+}
+
+.md-content ul {
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-left: 20px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  > li {
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    margin-bottom: 8px;
+    padding-left: 14px;
+    &::before {
+      content: "▪ ";
+      left: 0px;
+      position: absolute;
+      color: rgb(233, 94, 94);
+    }
+
+    > p {
+      justify-content: flex-start;
+      align-items: flex-start;
+      text-align: justify;
+      text-justify: inter-ideograph;
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.md-content ol {
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  padding-left: 40px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  counter-reset: sectioncounter;
+  > li:before {
+    position: absolute;
+    left: 10px;
+
+    color: rgb(233, 94, 94);
+    padding-left: 6px;
+    padding-right: 6px;
+
+    border-radius: 25%;
+    content: counter(sectioncounter) ". ";
+    counter-increment: sectioncounter;
+  }
+
+  > li {
+    margin-bottom: 8px;
+    flex-direction: row;
+  }
+}
+
+.md-content pre {
+  background-color: rgb(230, 198, 198);
+  border-top: 8px solid rgb(233, 94, 94);
+
+  padding: 10px;
+  padding-top: 6px;
+  margin-top: 8px;
+  font-size: 14px;
+  min-height: 50px;
+  height: auto;
+  max-height: 500px;
+  overflow: scroll;
+  overflow-x: scroll;
+  color: rgb(0, 0, 0);
+  @media screen and (max-width: 800px) {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media screen and (min-width: 800px) {
+    min-width: 60%;
+    max-width: 80%;
+  }
+}
+
+.md-content code {
+  font-family: "NOTO SERIF SC SEMIBOLD";
+  padding: 4px;
+  background-color: rgba(0, 0, 0, 0);
+  overflow: scroll;
+}
+
+.md-content blockquote {
+  font-style: italic;
+  @include md-blockquote-bg-color;
+  border-left: 6px solid rgb(124, 124, 124);
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  > p {
+    margin: 0;
+  }
+}
+
+.md-content img {
+  max-width: 90%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+pre::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+code::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}

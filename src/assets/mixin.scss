@@ -1,0 +1,141 @@
+@import "./theme.scss";
+@mixin page-bg-color($color) {
+  background-color: $color;
+  [data-theme="white"] & {
+    background-color: $w-page-bg-color;
+  }
+  [data-theme="black"] & {
+    background-color: $b-page-bg-color;
+  }
+}
+
+@mixin bg-color($color) {
+  background-color: $color;
+  [data-theme="white"] & {
+    background-color: $w-bg-color;
+  }
+  [data-theme="black"] & {
+    background-color: $b-bg-color;
+  }
+}
+
+@mixin bg-color-reverse($color) {
+  background-color: $color;
+  [data-theme="white"] & {
+    background-color: $w-bg-color-reverse;
+  }
+  [data-theme="black"] & {
+    background-color: $b-bg-color-reverse;
+  }
+}
+
+@mixin bg-color-t {
+  background-color: $w-bg-color-t;
+  [data-theme="white"] & {
+    background-color: $w-bg-color-t;
+  }
+  [data-theme="black"] & {
+    background-color: $b-bg-color-t;
+  }
+}
+
+@mixin md-blockquote-bg-color {
+  background-color: rgb(180, 180, 180);
+  [data-theme="white"] & {
+    background-color: rgb(180, 180, 180);
+  }
+  [data-theme="black"] & {
+    background-color: rgb(90, 90, 90);
+  }
+}
+
+@mixin font-color($color) {
+  color: $color;
+  [data-theme="white"] & {
+    color: $w-font-color;
+  }
+  [data-theme="black"] & {
+    color: $b-font-color;
+  }
+}
+
+@mixin font-color-light($color) {
+  color: $color;
+  [data-theme="white"] & {
+    color: $w-font-color-light;
+  }
+  [data-theme="black"] & {
+    color: $b-font-color-light;
+  }
+}
+
+@mixin font-color-reverse($color) {
+  color: $color;
+  [data-theme="white"] & {
+    color: $w-font-color-reverse;
+  }
+  [data-theme="black"] & {
+    color: $b-font-color-reverse;
+  }
+}
+
+@mixin border-color($color) {
+  border-bottom: 1px solid $color;
+  [data-theme="white"] & {
+    border-bottom: 1px solid $w-border-color;
+  }
+  [data-theme="black"] & {
+    border-bottom: 1px solid $b-border-color;
+  }
+}
+
+@mixin border-right-color($color) {
+  border-right: 2px solid $color;
+  [data-theme="white"] & {
+    border-right: 2px solid $w-font-color-light;
+  }
+  [data-theme="black"] & {
+    border-right: 2px solid $b-font-color-light;
+  }
+}
+
+@mixin border-full-color() {
+  border: 2px solid rgb(40, 40, 40);
+  [data-theme="white"] & {
+    border: 2px solid rgb(40, 40, 40);
+  }
+  [data-theme="black"] & {
+    border: 2px solid rgb(161, 161, 161);
+  }
+  &:hover {
+    border: 2px solid $theme-color;
+    .post-title {
+      color: $theme-color;
+      transition: all 0.2s;
+    }
+  }
+  transition: all 0.2s;
+}
+
+@mixin search-border() {
+  border: 4px solid $b-font-color-light;
+  [data-theme="white"] & {
+    border: 4px solid $b-font-color-light;
+  }
+  [data-theme="black"] & {
+    border: 4px solid $w-font-color-light;
+  }
+}
+
+@mixin f-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@mixin f-r {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
