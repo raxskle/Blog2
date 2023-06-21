@@ -1,3 +1,5 @@
+@import "/font2/myfont.css";
+
 html,
 body {
   width: 100vw;
@@ -37,7 +39,8 @@ a {
 #app {
   width: 100vw;
   position: relative;
-  font-family: "NOTO SERIF SC SEMIBOLD";
+  // font-family: "NOTO SERIF SC SEMIBOLD";
+  font-family: "Noto Serif SC";
 }
 
 .f-r {
@@ -53,52 +56,52 @@ a {
   align-items: center;
 }
 
-@font-face {
-  font-family: "NOTO SERIF SC SEMIBOLD";
-  src: url("/font/NotoSerifSC-SemiBold.otf");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0025-00FF, U+9dfa, U+9e0a, U+9e11, U+9e1a, U+9e1e, U+9e20, U+9e22, U+9e28-9e2c,
-    U+9e2e-9e33, U+9e35-9e3b, U+9e3e, U+9e40-9e44, U+9e46-9e4e, U+9e51, U+9e53, U+9e55-9e58,
-    U+9e5a-9e5c, U+9e5e-9e63, U+9e66-9e6e, U+9e71, U+9e73, U+9e75, U+9e78-9e79, U+9e7c-9e7e, U+9e82,
-    U+9e86-9e88, U+9e8b-9e8c, U+9e90-9e91, U+9e93, U+9e95, U+9e97, U+9e9d, U+9ea4-9ea5, U+9ea9-9eaa,
-    U+9eb4-9eb5, U+9eb8-9eba, U+9ebc-9ebf, U+9ec3, U+9ec9, U+9ecd, U+9ed0, U+9ed2-9ed3, U+9ed5-9ed6,
-    U+9ed9, U+9edc-9edd, U+9edf-9ee0, U+9ee2, U+9ee5, U+9ee7-9eea, U+9eef, U+9ef1, U+9ef3-9ef4,
-    U+9ef6, U+9ef9, U+9efb-9efc, U+9efe, U+9f0b, U+9f0d, U+9f10, U+9f14, U+9f17, U+9f19, U+9f22,
-    U+9f29, U+9f2c, U+9f2f, U+9f31, U+9f37, U+9f39;
-}
-@font-face {
-  font-family: "NOTO SERIF SC SEMIBOLD";
-  src: url("/font/NotoSerifSC-SemiBold.otf");
-  font-weight: normal;
-  font-style: normal;
-  font-display: auto;
-}
+// @font-face {
+//   font-family: "NOTO SERIF SC SEMIBOLD";
+//   src: url("/font/NotoSerifSC-SemiBold.otf");
+//   font-weight: normal;
+//   font-style: normal;
+//   font-display: swap;
+//   unicode-range: U+0025-00FF, U+9dfa, U+9e0a, U+9e11, U+9e1a, U+9e1e, U+9e20, U+9e22, U+9e28-9e2c,
+//     U+9e2e-9e33, U+9e35-9e3b, U+9e3e, U+9e40-9e44, U+9e46-9e4e, U+9e51, U+9e53, U+9e55-9e58,
+//     U+9e5a-9e5c, U+9e5e-9e63, U+9e66-9e6e, U+9e71, U+9e73, U+9e75, U+9e78-9e79, U+9e7c-9e7e, U+9e82,
+//     U+9e86-9e88, U+9e8b-9e8c, U+9e90-9e91, U+9e93, U+9e95, U+9e97, U+9e9d, U+9ea4-9ea5, U+9ea9-9eaa,
+//     U+9eb4-9eb5, U+9eb8-9eba, U+9ebc-9ebf, U+9ec3, U+9ec9, U+9ecd, U+9ed0, U+9ed2-9ed3, U+9ed5-9ed6,
+//     U+9ed9, U+9edc-9edd, U+9edf-9ee0, U+9ee2, U+9ee5, U+9ee7-9eea, U+9eef, U+9ef1, U+9ef3-9ef4,
+//     U+9ef6, U+9ef9, U+9efb-9efc, U+9efe, U+9f0b, U+9f0d, U+9f10, U+9f14, U+9f17, U+9f19, U+9f22,
+//     U+9f29, U+9f2c, U+9f2f, U+9f31, U+9f37, U+9f39;
+// }
+// @font-face {
+//   font-family: "NOTO SERIF SC SEMIBOLD";
+//   src: url("/font/NotoSerifSC-SemiBold.otf");
+//   font-weight: normal;
+//   font-style: normal;
+//   font-display: auto;
+// }
 
-@font-face {
-  font-family: "NOTO SERIF SC SEMIBOLD";
-  src: url("/font/NotoSerifSC-SemiBold.otf");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+73e7-73ea, U+73ee-73f0, U+73f2, U+73f4-73f5, U+73f7, U+73f9-73fa, U+73fc-73fd,
-    U+73ff-7402, U+7404, U+7407-7408, U+740a-740f, U+7418, U+741a-741c, U+741e, U+7424-7425,
-    U+7428-7429, U+742c-7430, U+7432, U+7435-7436, U+7438-743b, U+743e-7441, U+7443-7446, U+7448,
-    U+744a-744b, U+7452, U+7457, U+745b, U+745d, U+7460, U+7462-7465, U+7467-746a, U+746d, U+746f,
-    U+7471, U+7473-7474, U+7477, U+747a, U+747e, U+7481-7482, U+7484, U+7486, U+7488-748b,
-    U+748e-748f, U+7493, U+7498, U+749a, U+749c-74a0, U+74a3, U+74a6, U+74a9-74aa, U+74ae,
-    U+74b0-74b2, U+74b6, U+74b8-74ba, U+74bd, U+74bf, U+74c1, U+74c3, U+74c5, U+74c8, U+74ca, U+74cc,
-    U+74cf, U+74d1-74d2, U+74d4-74d5, U+74d8-74db, U+74de-74e0, U+74e2, U+74e4-74e5, U+74e7-74e9,
-    U+74ee;
-}
+// @font-face {
+//   font-family: "NOTO SERIF SC SEMIBOLD";
+//   src: url("/font/NotoSerifSC-SemiBold.otf");
+//   font-weight: normal;
+//   font-style: normal;
+//   font-display: swap;
+//   unicode-range: U+73e7-73ea, U+73ee-73f0, U+73f2, U+73f4-73f5, U+73f7, U+73f9-73fa, U+73fc-73fd,
+//     U+73ff-7402, U+7404, U+7407-7408, U+740a-740f, U+7418, U+741a-741c, U+741e, U+7424-7425,
+//     U+7428-7429, U+742c-7430, U+7432, U+7435-7436, U+7438-743b, U+743e-7441, U+7443-7446, U+7448,
+//     U+744a-744b, U+7452, U+7457, U+745b, U+745d, U+7460, U+7462-7465, U+7467-746a, U+746d, U+746f,
+//     U+7471, U+7473-7474, U+7477, U+747a, U+747e, U+7481-7482, U+7484, U+7486, U+7488-748b,
+//     U+748e-748f, U+7493, U+7498, U+749a, U+749c-74a0, U+74a3, U+74a6, U+74a9-74aa, U+74ae,
+//     U+74b0-74b2, U+74b6, U+74b8-74ba, U+74bd, U+74bf, U+74c1, U+74c3, U+74c5, U+74c8, U+74ca, U+74cc,
+//     U+74cf, U+74d1-74d2, U+74d4-74d5, U+74d8-74db, U+74de-74e0, U+74e2, U+74e4-74e5, U+74e7-74e9,
+//     U+74ee;
+// }
 
-@font-face {
-  font-family: "NOTO SERIF SC";
-  src: url("/font/NotoSerifSC-Bold.otf");
-  font-weight: normal;
-  font-style: normal;
-}
+// @font-face {
+//   font-family: "NOTO SERIF SC";
+//   src: url("/font/NotoSerifSC-Bold.otf");
+//   font-weight: normal;
+//   font-style: normal;
+// }
 
 /* 鼠标选中文本 */
 ::selection {

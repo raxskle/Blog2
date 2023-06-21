@@ -33,6 +33,7 @@ h4 {
   font-weight: 900;
   position: relative;
   padding-left: 24px;
+  @include font-color($w-font-color);
   @media screen and (max-width: 800px) {
     width: 80%;
   }
@@ -50,7 +51,8 @@ h4 {
   font-size: 18px;
   width: 80%;
   position: relative;
-  padding-left: 28px;
+  padding-left: 32px;
+  @include font-color($w-font-color);
   &:hover {
     &::before {
       content: "##";
@@ -63,13 +65,11 @@ h4 {
 .md-content h5,
 .md-content h6 {
   font-size: 18px;
+  width: 80%;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   position: relative;
-  font-weight: bold;
-  font-weight: 900;
-  font-family: "NOTO SERIF SC";
-  // font-family: "NOTO SERIF SC SEMIBOLD";
+  color: $theme-color-deep;
 }
 
 .md-content p {
@@ -172,7 +172,10 @@ h4 {
 }
 
 .md-content code {
-  font-family: "NOTO SERIF SC SEMIBOLD";
+  // font-family: "NOTO SERIF SC SEMIBOLD";
+  // font-family: "Noto Serif SC";
+  font-family: "";
+  font-weight: 900;
   padding: 4px;
   background-color: rgba(0, 0, 0, 0);
   overflow: scroll;

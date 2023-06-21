@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TechHomePage from "../pages/tech/TechHomePage.vue";
-import DailyHomePage from "@/pages/daily/DailyHomePage.vue";
+import DiaryHomePage from "@/pages/diary/DiaryHomePage.vue";
 import TechArticlePage from "@/pages/tech/TechArticlePage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 
@@ -32,9 +32,9 @@ const router = createRouter({
     },
     {
       // daily 的首页
-      path: "/daily",
-      name: "daily-home",
-      component: DailyHomePage
+      path: "/diary",
+      name: "diary-home",
+      component: DiaryHomePage
     },
     {
       // 未匹配的到这里来
