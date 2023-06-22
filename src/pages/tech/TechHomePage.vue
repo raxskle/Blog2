@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import NavigationBar from "@/components/tech/NavigationBar.vue";
 import PostItem from "@/components/tech/PostItem.vue";
-import PageTail from "@/components/tech/PageTail.vue";
+import PageTail from "@/components/PageTail.vue";
 
 import TurnPageBar from "@/components/tech/TurnPageBar.vue";
 import SettingBar from "@/components/tech/SettingBar.vue";

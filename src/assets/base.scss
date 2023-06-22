@@ -18,6 +18,8 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   /*   禁止掉浏览器自身的顶部下拉刷新 */
   overscroll-behavior-y: contain;
+  // 文本抗锯齿
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -32,7 +34,8 @@ a {
 
 ::-webkit-scrollbar-thumb {
   /* background-color: rgb(192, 238, 244); */
-  background-color: rgb(233, 94, 94);
+  // background-color: rgb(233, 94, 94);
+  background-color: rgb(182, 182, 182);
   // border-radius: 5px;
 }
 

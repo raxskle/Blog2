@@ -6,6 +6,7 @@ function addHandleClickImg() {
     if (img.addEventListener) {
       img.addEventListener("click", () => {
         console.log("todo:查看大图");
+        alert("todo:查看大图");
       });
     }
   });

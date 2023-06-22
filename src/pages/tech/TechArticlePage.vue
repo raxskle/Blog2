@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import NavigationBar from "@/components/tech/NavigationBar.vue";
-import PageTail from "@/components/tech/PageTail.vue";
+import PageTail from "@/components/PageTail.vue";
 
 import ArticlePageAsync from "@/components/tech/ArticlePageAsync.vue";
 
