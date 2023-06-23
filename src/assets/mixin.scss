@@ -139,3 +139,14 @@
   justify-content: center;
   align-items: center;
 }
+
+@mixin ellipse-n-line($n) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  display: -webkit-inline-box;
+  -webkit-line-clamp: 4;
+  -webkit-line-clamp: $n;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}

@@ -16,7 +16,9 @@
 
 ---
 
-todos: 文章页图片查看大图，所有图片加载中 放 加载效果
+todos:
+
+[ ] 文章页图片查看大图，所有图片加载中 放 加载效果
 
 ---
 
@@ -36,7 +38,10 @@ todos: 文章页图片查看大图，所有图片加载中 放 加载效果
 
 ---
 
-todos: 做一下 github actions，练一下 git 规范
+todos:
+
+[ ] 做一下 github actions，练一下 git 规范
+[ ] music player，pc 端和移动端两个 UI，复用一下之前的原生 js 代码
 
 ---
 
@@ -154,3 +159,11 @@ hljs.configure({ languages: ["javascript"], ignoreUnescapedHTML: true });
 transiton 一项，多个不同属性之间分别写完整，再用 , 分隔
 
 transition: transform 0.8s ease, color 0.2s ease, border 0.2s ease;
+
+## 字体分包
+
+字体文件过大，加载速度慢，导致页面体验不佳
+
+使用字体分包，利用 unicode-range 属性，将一个几 m 的字体文件划分为比如 100 多个文件，先加载完的部分字体先显示对应字体，一般不需要加载完原本的整个字体包就能显示完一篇文章的所有文字，速度将会提升非常多。
+
+翻了别人的博客的源代码，恍然大悟，如果不在意引用的第三方托管可能某天突然炸了的话，直接复制别人的字体引入 css 文件（前提是他用的第三方字体托管是公开的），这个问题就解决了，不需要自己考虑操作分割和托管字体文件。

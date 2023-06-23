@@ -1,5 +1,7 @@
 <template>
   <main class="diary-page">
+    <div class="top-left-nav" @click="onClickIcon">游牧人的文字</div>
+    <div class="top-right-about" @click="onClickAbout">A</div>
     <div class="flickity-slider">
       <div
         class="flickity-all"
@@ -263,6 +265,14 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("scroll", onScrollLoadMore);
 });
+
+const onClickIcon = () => {
+  location.reload();
+};
+
+const onClickAbout = () => {
+  window.open("https://blog.raxskle.fun/tech");
+};
 </script>
 
 <style scoped lang="scss">
@@ -342,6 +352,9 @@ onUnmounted(() => {
 
 .loop-wrap {
   width: 100vw;
+  box-sizing: border-box;
+  padding-left: 80px;
+  padding-right: 80px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -371,5 +384,56 @@ onUnmounted(() => {
 
 .btn-show-up {
   transform: translateY(-5vh);
+}
+
+.top-left-nav {
+  z-index: 100;
+  color: rgb(52, 52, 52);
+  writing-mode: vertical-lr;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.2s ease;
+  &:hover {
+    color: rgb(129, 129, 129);
+  }
+}
+
+.top-right-about {
+  z-index: 100;
+
+  background-color: $theme-color;
+
+  @include f-c;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+  .top-left-nav {
+    position: absolute;
+    top: 50px;
+    left: 26px;
+  }
+  .top-right-about {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 18px;
+    top: 50px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .top-left-nav {
+    position: fixed;
+    top: 50px;
+    left: 26px;
+  }
+  .top-right-about {
+    position: fixed;
+    width: 34px;
+    height: 34px;
+    right: 18px;
+    top: 50px;
+  }
 }
 </style>

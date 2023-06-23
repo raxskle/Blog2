@@ -54,8 +54,6 @@ function onClickToArticlePage() {
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/mixin.scss";
-
 .post {
   width: 100%;
   margin-bottom: 20px;
@@ -103,13 +101,7 @@ function onClickToArticlePage() {
   font-family: "NOTO SERIF SC";
   transition: all 0.2s;
   // flex-grow: 1;
-  text-overflow: ellipsis;
-  display: -webkit-inline-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  word-break: nowrap;
-  overflow: hidden;
-  flex-wrap: nowrap;
+  @include ellipse-n-line(1);
 }
 
 .postInfo {
@@ -129,14 +121,7 @@ function onClickToArticlePage() {
   > p {
     box-sizing: border-box;
     margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    display: -webkit-inline-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
-    user-select: none;
+    @include ellipse-n-line(2);
   }
 }
 
@@ -161,7 +146,7 @@ function onClickToArticlePage() {
     flex-direction: column-reverse;
     // height: 560px;
     border: 2px solid transparent;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
   }
   .text-area {
     width: 100%;

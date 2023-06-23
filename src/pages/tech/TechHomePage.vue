@@ -136,6 +136,26 @@ main {
   align-items: center;
 }
 
+// 移动端适配
+@media screen and (max-width: 500px) {
+  .post-container {
+    width: 95%;
+  }
+  .tags-container {
+    display: none;
+  }
+}
+
+// 中等屏适配
+@media screen and (min-width: 500px) and (max-width: 900px) {
+  .post-container {
+    width: 85%;
+  }
+  .tags-container {
+    display: none;
+  }
+}
+
 // pc适配
 @media screen and (min-width: 900px) {
   .post-container {
@@ -149,20 +169,11 @@ main {
   }
 }
 
-// 移动端适配
-@media screen and (max-width: 900px) {
-  .post-container {
-    width: 95%;
-  }
-  .tags-container {
-    display: none;
-  }
-}
-
 .current-tags {
   font-size: 30px;
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 10px;
   user-select: none;
   // height: 50px;
   position: relative;

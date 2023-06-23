@@ -7,7 +7,7 @@
   >
     <div class="post-item-text" :style="{ alignItems: postTextFlexDirecton }">
       <div class="post-item-info">2023/6/23</div>
-      <div class="post-item-title">标题标题</div>
+      <div class="post-item-title">标题标题标题标题</div>
       <div class="post-item-content">
         一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本
       </div>
@@ -92,7 +92,7 @@ onUnmounted(() => {
 </script>
 <style scoped lang="scss">
 .post-item-wrap {
-  width: 88vw;
+  width: 100%;
   height: 80vh;
   // background-color: rgb(230, 165, 165);
   box-sizing: border-box;
@@ -128,7 +128,7 @@ onUnmounted(() => {
 // pc大屏1000px
 @media screen and (min-width: 1000.1px) {
   .post-item-wrap {
-    width: 88vw;
+    width: 100%;
     height: 80vh;
   }
 }
@@ -145,14 +145,34 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: flex-start;
   box-sizing: border-box;
+  user-select: text;
+  .post-item-title {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    @include ellipse-n-line(1);
+
+    &::before {
+      content: "";
+      background-color: rgba(0, 0, 0, 0.6);
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      width: 0%;
+      height: 40%;
+      z-index: 1;
+      transition: all 0.4s ease;
+    }
+    &:hover {
+      &::before {
+        width: 100%;
+      }
+    }
+  }
   .post-item-content {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    display: -webkit-inline-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    word-break: break-all;
+    cursor: pointer;
+    @include ellipse-n-line(4);
   }
 }
 .post-item-image {
@@ -183,6 +203,7 @@ onUnmounted(() => {
       font-size: 30px;
       margin-top: 1.5vh;
       margin-bottom: 1.5vh;
+      max-width: 85%;
     }
     .post-item-content {
       max-width: 80%;
@@ -210,6 +231,7 @@ onUnmounted(() => {
       font-size: 36px;
       margin-top: 2vh;
       margin-bottom: 2vh;
+      max-width: 70%;
     }
     .post-item-content {
       max-width: 80%;
@@ -236,6 +258,7 @@ onUnmounted(() => {
       font-size: 36px;
       margin-top: 4%;
       margin-bottom: 4%;
+      max-width: 70%;
     }
     .post-item-content {
       max-width: 80%;

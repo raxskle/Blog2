@@ -36,13 +36,7 @@ defineProps<{
     padding-right: 10vw;
 
     .header-post-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      display: -webkit-inline-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      word-break: break-all;
+      @include ellipse-n-line(1);
 
       z-index: 2;
       position: relative;
@@ -70,13 +64,7 @@ defineProps<{
     .header-post-digest {
       // width: 100%;
 
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      display: -webkit-inline-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      word-break: break-all;
+      @include ellipse-n-line(4);
     }
   }
 
@@ -180,7 +168,7 @@ defineProps<{
 
 @media screen and (min-width: 1200px) {
   .header-post-title {
-    font-size: 50px;
+    font-size: 54px;
   }
 }
 </style>
