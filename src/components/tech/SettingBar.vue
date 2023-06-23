@@ -6,7 +6,7 @@
       <div class="music-btn-icon">M</div>
     </div>
   </div>
-  <MusicPlayer v-if="showMusicPlayer"></MusicPlayer>
+  <MusicPlayer v-show="showMusicPlayer" @closePlayer="musicPlayerCtrl"></MusicPlayer>
 </template>
 
 <script setup lang="ts">
@@ -17,7 +17,7 @@ defineProps<{
   posi: StyleValue | undefined;
 }>();
 
-const showMusicPlayer = ref(false);
+const showMusicPlayer = ref(true);
 
 const musicPlayerCtrl = () => {
   console.log("click music btn", !showMusicPlayer.value);
