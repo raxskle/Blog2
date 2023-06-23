@@ -37,31 +37,29 @@
         </div>
         <div class="music-details-song-name">{{ currentSong.title }}</div>
         <div class="music-details-singer-name">{{ currentSong.artist }}</div>
-        <div class="music-details-progress-bar-wrap">
-          <div
-            @mousedown="onMouseDownDrag"
-            @mouseover="onMouseOverDrag"
-            @mouseleave="onMouseLeaveDrag"
-            ref="progressBar"
-            class="progress-bar-all"
-          >
-            <div class="progress-bar-played" :style="{ width: `${progress}%` }"></div>
-          </div>
-          <div
-            ref="drag"
-            class="progress-bar-btn"
-            :style="{ left: `${offsetPosi}px`, transform: dragScale }"
-          ></div>
+        <div class="music-details-progress-box">
+          <ProgressBar
+            :direction="'row'"
+            :progress="progress"
+            @changeProgress="changeProgress"
+          ></ProgressBar>
         </div>
-        <!-- <ProgressBar :player="player" :progress="progress"></ProgressBar> -->
       </div>
     </div>
 
     <div class="music-ctrl-bar">
-      <div class="music-btn music-volume">
+      <div
+        @mouseover="() => (showVolumeCtrl = true)"
+        @mouseleave="() => (showVolumeCtrl = false)"
+        class="music-btn music-volume"
+      >
         音
-        <div class="music-volume-ctrl">
-          <div></div>
+        <div v-if="showVolumeCtrl" class="music-volume-ctrl">
+          <ProgressBar
+            :progress="volumeP"
+            @changeProgress="changeVolumeP"
+            :direction="'column'"
+          ></ProgressBar>
         </div>
       </div>
       <div class="music-btn music-prev-song">←</div>
@@ -72,8 +70,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref } from "vue";
-// import ProgressBar from "./ProgressBar.vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
+import ProgressBar from "./ProgressBar.vue";
 
 interface Song {
   _id: number;
@@ -185,10 +183,33 @@ const currentSong = reactive<Song>({ ...songList[0] });
 
 // 目前的播放进度百分比
 const progress = ref(0);
+// progressBar子组件修改progress
+const changeProgress = (p: number) => {
+  progress.value = p;
+  // 修改player播放进度
+  if (player.paused) {
+    play(progress.value);
+  }
+  if (player.duration && player.currentTime) {
+    player.currentTime = progress.value * 0.01 * player.duration;
+  }
+};
 
-// 目前的音量
-const volume = ref(0.2);
+// 目前的音量百分比
+const volumeP = ref(20);
+// 实际的音量
+const volume = computed(() => volumeP.value * 0.01 * 0.2);
+// 修改音量
+const changeVolumeP = (_v: number) => {
+  // console.log("音量：", volume.value);
+  volumeP.value = _v;
+};
+// 修改player的真实音量
+watch(volume, (_v) => {
+  player.volume = _v;
+});
 
+const showVolumeCtrl = ref(false);
 // 目前的播放模式 1单曲循环，2列表循环，3随机播放
 // const listMode = ref(1);
 
@@ -213,6 +234,7 @@ const loadSong = () => {
   currentSong.time = player.duration; // 置时长
 };
 
+// 切换currentSong歌曲
 const chagneCurrentSong = (song: Song) => {
   if (song.link) {
     currentSong._id = song._id;
@@ -232,42 +254,42 @@ onMounted(() => {
 // 播放时定时计算progress
 const progressInterval = () => {
   if (player.currentTime) {
-    // console.log("playing", player.currentTime);
     progress.value = (player.currentTime / player.duration) * 100;
-
-    const fullPosi = progressBar.value.clientWidth - 6;
-    offsetPosi.value = fullPosi * progress.value * 0.01 - 3;
-    console.log("playing", progress.value, offsetPosi.value);
   }
 };
 
+// 定时器id
 let intervalId = 0;
 
-const play = () => {
+const play = (_p?: number) => {
   // 播放
-  console.log("toggle play");
+  // console.log("toggle play");
   player.play();
   isPlaying.value = true;
   currentSong.time = player.duration;
+  if (_p) {
+    // 如果传入的progress就跳到对应进度
+    player.currentTime = _p * 0.01 * player.duration;
+  }
   // console.log(player.duration);
 
-  intervalId = setInterval(progressInterval, 400);
-  // player.oncanplaythrough = () => {
-  //   console.log("play song");
-  //   player.play();
-  //   isPlaying.value = true;
-  // };
+  if (intervalId != 0) {
+    clearInterval(intervalId);
+    intervalId = 0;
+  }
+  intervalId = setInterval(progressInterval, 1000);
 };
 
 const pause = () => {
   // 暂停
-  console.log("pause song");
+  // console.log("pause song");
   player.pause();
   isPlaying.value = false;
   clearInterval(intervalId);
+  intervalId = 0;
 };
 
-// 点击播放
+// 点击按钮播放或暂停
 const togglePlay = () => {
   if (!isPlaying.value && player.src) {
     play();
@@ -275,112 +297,6 @@ const togglePlay = () => {
     pause();
   }
 };
-
-// 进度条相关：
-
-// 进度条ref，用来获取进度条px长度
-const progressBar = ref();
-// 进度条拖动ref
-const drag = ref();
-// mouse down 时 按钮的位置
-const startPosi = ref(0);
-// mouse move 时 按钮的位置
-const offsetPosi = ref(0);
-// 标记正在拖动
-const isDraging = ref(false);
-// 拖动 mouse down 时的位置
-const startX = ref(0); // 相对client的
-const clientX = ref(0);
-// 拖动中 mouse move 的位置
-const offsetX = ref(0);
-// 按钮放大效果
-const dragScale = ref("");
-
-const btnWidth = 6;
-
-// 按钮的位置范围是[0, 进度条-16]
-const onMouseDownDrag = (e: MouseEvent) => {
-  // 标记正在拖动，标记开始时鼠标和按钮的px位置
-  // console.log("mouse down ", e);
-  isDraging.value = true;
-  startX.value = e.clientX;
-  // console.log(startX.value);
-  clientX.value = e.clientX;
-
-  const fullPosi = progressBar.value.clientWidth - btnWidth;
-  progress.value = (e.offsetX / fullPosi) * 100;
-  progress.value = Math.max(progress.value, 0);
-  progress.value = Math.min(progress.value, 100);
-
-  // 开始位置
-  startPosi.value = fullPosi * progress.value * 0.01 - btnWidth / 2; // -8 是为了按钮中间跟随鼠标
-  startPosi.value = Math.max(startPosi.value, 0);
-  startPosi.value = Math.min(startPosi.value, fullPosi);
-  // 将按钮移动到点击位置
-  offsetPosi.value = startPosi.value;
-  // 修改player进度
-  if (player.duration) {
-    player.currentTime = progress.value * 0.01 * player.duration;
-  }
-};
-
-const onMouseMoveDrag = (e: MouseEvent) => {
-  // if (e.target === progressBar.value) {
-  //   dragScale.value = "scale(2)";
-  // }
-  if (isDraging.value) {
-    e.preventDefault();
-    dragScale.value = "scale(2)";
-    // 更新拖动相对px
-    // console.log("move:e.clientX", e.clientX);
-    console.dir(e);
-    offsetX.value = e.clientX - startX.value;
-    // console.log("offsetX.value ", offsetX.value);
-    // 更新播放百分比和进度条位置
-    // const len = progressBar.value.clientWidth;
-    // console.log("len", len);
-    // console.log(offsetX.value / len);
-    const fullPosi = progressBar.value.clientWidth - btnWidth;
-    // 更新按钮px位置
-    offsetPosi.value = startPosi.value + offsetX.value;
-    console.log("offsetPosi.value", offsetPosi.value);
-    offsetPosi.value = Math.max(offsetPosi.value, 0);
-    offsetPosi.value = Math.min(offsetPosi.value, fullPosi);
-
-    // 更新progress进度
-    progress.value = (offsetPosi.value / fullPosi) * 100;
-    console.log("progress", progress.value);
-    progress.value = Math.max(progress.value, 0);
-    progress.value = Math.min(progress.value, 100);
-
-    // 修改player进度
-    if (player.duration) {
-      player.currentTime = progress.value * 0.01 * player.duration;
-    }
-  }
-};
-
-const onMouseUpDrag = (e: MouseEvent) => {
-  isDraging.value = false;
-  if (e.target == progressBar.value) {
-    dragScale.value = "scale(2)";
-  } else {
-    dragScale.value = "";
-  }
-
-  // console.log("mouse up 进度百分比", progress.value);
-};
-
-const onMouseOverDrag = () => {
-  dragScale.value = "scale(2)";
-};
-
-const onMouseLeaveDrag = () => {
-  dragScale.value = "";
-};
-
-document.addEventListener("mousemove", onMouseMoveDrag);
-document.addEventListener("mouseup", onMouseUpDrag);
 
 // 显示details，如果id不同则切换歌曲
 const onClickSonglistItem = (song: Song) => {
@@ -393,11 +309,6 @@ const onClickSonglistItem = (song: Song) => {
     play();
   }
 };
-
-onUnmounted(() => {
-  document.removeEventListener("mousemove", onMouseMoveDrag);
-  document.removeEventListener("mouseup", onMouseUpDrag);
-});
 </script>
 
 <style scoped lang="scss">
@@ -598,41 +509,9 @@ onUnmounted(() => {
       max-width: 60%;
       @include ellipse-n-line(1);
     }
-    .music-details-progress-bar-wrap {
+    .music-details-progress-box {
       width: 90%;
       height: 16px;
-      // background-color: antiquewhite;
-      margin-top: 0.5vw;
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      .progress-bar-all {
-        width: 100%;
-        height: 6px;
-
-        overflow: visible;
-        background-color: rgba(128, 128, 128, 0.314);
-        cursor: pointer;
-        position: relative;
-        .progress-bar-played {
-          height: 100%;
-          width: 0%;
-          background-color: $theme-color;
-        }
-      }
-      .progress-bar-btn {
-        position: absolute;
-        left: 0px;
-        // top: -5px;
-        background-color: black;
-        @include bg-color-reverse($w-bg-color-reverse);
-        width: 6px;
-        height: 6px;
-        cursor: pointer;
-        pointer-events: none;
-        transition: transform 0.2s ease;
-      }
     }
   }
 }
@@ -657,6 +536,22 @@ onUnmounted(() => {
     @include f-c;
     cursor: pointer;
   }
+  .music-volume {
+    position: relative;
+    z-index: 3;
+    .music-volume-ctrl {
+      position: absolute;
+      top: -100px;
+      box-shadow: 0px 0px 6px 2px rgba(128, 128, 128, 0.367);
+      @include bg-color($w-bg-color); // border: 1px solid black;
+      width: 30px;
+      height: 100px;
+      box-sizing: border-box;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      z-index: 2;
+    }
+  }
   .music-toggle {
     width: 50px;
     height: 50px;
@@ -666,7 +561,7 @@ onUnmounted(() => {
 }
 
 // 移动端
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 950px) {
   .music-player {
     right: 0px;
     bottom: 0px;
@@ -676,7 +571,7 @@ onUnmounted(() => {
 }
 
 // pc端
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 950px) {
   .music-player {
     right: 65px;
     bottom: 20px;

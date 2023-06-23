@@ -1,31 +1,54 @@
 <template>
-  <div class="music-details-progress-bar-wrap">
+  <div
+    :class="{
+      'music-details-progress-bar-wrap-r': direction !== 'column',
+      'music-details-progress-bar-wrap-c': direction === 'column'
+    }"
+  >
     <div
       @mousedown="onMouseDownDrag"
       @mouseover="onMouseOverDrag"
       @mouseleave="onMouseLeaveDrag"
       ref="progressBar"
-      class="progress-bar-all"
+      :class="{
+        'progress-bar-all-r': direction !== 'column',
+        'progress-bar-all-c': direction === 'column'
+      }"
     >
-      <div class="progress-bar-played" :style="{ width: `${progress}%` }"></div>
+      <div
+        :class="{
+          'progress-bar-played-r': direction !== 'column',
+          'progress-bar-played-c': direction === 'column'
+        }"
+        :style="playedStyle"
+      ></div>
     </div>
     <div
       ref="drag"
-      class="progress-bar-btn"
-      :style="{ left: `${offsetPosi}px`, transform: dragScale }"
+      :class="{
+        'progress-bar-btn-r': direction !== 'column',
+        'progress-bar-btn-c': direction === 'column'
+      }"
+      :style="{
+        bottom: direction === 'column' ? `${offsetPosi}px` : '',
+        left: direction !== 'column' ? `${offsetPosi}px` : '',
+        transform: `${dragScale}`
+      }"
     ></div>
   </div>
 </template>
 
+<!-- 组件与父组件通信数据只有进度百分比 -->
 <script setup lang="ts">
-import { onUnmounted, ref, toRefs } from "vue";
+import { computed, onMounted, onUnmounted, ref, toRefs, watch } from "vue";
 
 const props = defineProps<{
   progress: number;
-  player: HTMLAudioElement;
+  direction: "row" | "column";
 }>();
+const { progress, direction } = toRefs(props);
 
-const { progress, player } = toRefs(props);
+const emit = defineEmits(["changeProgress"]);
 // 进度条相关：
 
 // 进度条ref，用来获取进度条px长度
@@ -47,65 +70,102 @@ const offsetX = ref(0);
 const dragScale = ref("");
 
 const btnWidth = 6;
+const btnHeight = 6;
+
+const playedStyle = computed(() => {
+  if (direction.value === "column") {
+    return `height: ${progress.value}%;`;
+  } else {
+    return `width: ${progress.value}%;`;
+  }
+});
+
+const limit = (num: number, max: number, min: number) => {
+  let res = Math.max(num, min);
+  res = Math.min(res, max);
+  return res;
+};
+
+onMounted(() => {
+  if (direction.value == "column") {
+    const fullPosi = progressBar.value.clientHeight - btnHeight;
+    offsetPosi.value = limit(fullPosi * progress.value * 0.01, fullPosi, 0);
+  }
+});
+
+watch(progress, (newProgress) => {
+  if (direction.value == "column") {
+    const fullPosi = progressBar.value.clientHeight - btnHeight;
+    offsetPosi.value = limit(fullPosi * newProgress * 0.01, fullPosi, 0);
+  } else {
+    const fullPosi = progressBar.value.clientWidth - btnWidth;
+    offsetPosi.value = limit(fullPosi * newProgress * 0.01 - btnWidth / 2, fullPosi, 0);
+  }
+});
 
 // 按钮的位置范围是[0, 进度条-16]
 const onMouseDownDrag = (e: MouseEvent) => {
-  // 标记正在拖动，标记开始时鼠标和按钮的px位置
-  // console.log("mouse down ", e);
-  isDraging.value = true;
-  startX.value = e.clientX;
-  // console.log(startX.value);
-  clientX.value = e.clientX;
+  if (direction.value === "column") {
+    // 标记正在拖动，标记开始时鼠标和按钮的px位置
+    isDraging.value = true;
+    startX.value = e.clientY;
+    clientX.value = e.clientY;
 
-  const fullPosi = progressBar.value.clientWidth - btnWidth;
-  progress.value = (e.offsetX / fullPosi) * 100;
-  progress.value = Math.max(progress.value, 0);
-  progress.value = Math.min(progress.value, 100);
+    const fullPosi = progressBar.value.clientHeight - btnHeight;
+    const _p = limit((1 - e.offsetY / fullPosi) * 100, 100, 0);
+    emit("changeProgress", _p); // 这玩意儿居然是异步的
+    // 开始位置
+    startPosi.value = limit(fullPosi - e.offsetY + btnHeight, fullPosi, 0);
+    // 将按钮移动到点击位置
+    offsetPosi.value = startPosi.value;
+  } else if (direction.value === "row") {
+    // 标记正在拖动，标记开始时鼠标和按钮的px位置
+    isDraging.value = true;
+    startX.value = e.clientX;
+    clientX.value = e.clientX;
 
-  // 开始位置
-  startPosi.value = fullPosi * progress.value * 0.01 - btnWidth / 2; // -8 是为了按钮中间跟随鼠标
-  startPosi.value = Math.max(startPosi.value, 0);
-  startPosi.value = Math.min(startPosi.value, fullPosi);
-  // 将按钮移动到点击位置
-  offsetPosi.value = startPosi.value;
-  // 修改player进度
-  if (player.value.duration) {
-    player.value.currentTime = progress.value * 0.01 * player.value.duration;
+    const fullPosi = progressBar.value.clientWidth - btnWidth;
+    const _p = limit((e.offsetX / fullPosi) * 100, 100, 0);
+    emit("changeProgress", _p); // 这玩意儿居然是异步的
+
+    // 开始位置
+    startPosi.value = limit(e.offsetX - btnWidth / 2, fullPosi, 0);
+    // 将按钮移动到点击位置
+    offsetPosi.value = startPosi.value;
   }
 };
 
 const onMouseMoveDrag = (e: MouseEvent) => {
-  // if (e.target === progressBar.value) {
-  //   dragScale.value = "scale(2)";
-  // }
-  if (isDraging.value) {
-    e.preventDefault();
-    dragScale.value = "scale(2)";
-    // 更新拖动相对px
-    // console.log("move:e.clientX", e.clientX);
-    console.dir(e);
-    offsetX.value = e.clientX - startX.value;
-    // console.log("offsetX.value ", offsetX.value);
-    // 更新播放百分比和进度条位置
-    // const len = progressBar.value.clientWidth;
-    // console.log("len", len);
-    // console.log(offsetX.value / len);
-    const fullPosi = progressBar.value.clientWidth - btnWidth;
-    // 更新按钮px位置
-    offsetPosi.value = startPosi.value + offsetX.value;
-    console.log("offsetPosi.value", offsetPosi.value);
-    offsetPosi.value = Math.max(offsetPosi.value, 0);
-    offsetPosi.value = Math.min(offsetPosi.value, fullPosi);
+  if (direction.value === "column") {
+    if (isDraging.value) {
+      e.preventDefault();
+      dragScale.value = "scale(2)";
+      // 更新拖动相对px
+      offsetX.value = -(e.clientY - startX.value);
 
-    // 更新progress进度
-    progress.value = (offsetPosi.value / fullPosi) * 100;
-    console.log("progress", progress.value);
-    progress.value = Math.max(progress.value, 0);
-    progress.value = Math.min(progress.value, 100);
+      // 更新播放百分比和进度条位置
+      const fullPosi = progressBar.value.clientHeight - btnHeight;
 
-    // 修改player进度
-    if (player.value.duration) {
-      player.value.currentTime = progress.value * 0.01 * player.value.duration;
+      // 更新按钮px位置
+      offsetPosi.value = limit(startPosi.value + offsetX.value, fullPosi, 0);
+      // 更新progress进度
+      const _p = limit((offsetPosi.value / fullPosi) * 100, 100, 0);
+      emit("changeProgress", _p);
+    }
+  } else {
+    if (isDraging.value) {
+      e.preventDefault();
+      dragScale.value = "scale(2)";
+      // 更新拖动相对px
+      offsetX.value = e.clientX - startX.value;
+      // 更新播放百分比和进度条位置
+      const fullPosi = progressBar.value.clientWidth - btnWidth;
+
+      // 更新按钮px位置
+      offsetPosi.value = limit(startPosi.value + offsetX.value, fullPosi, 0);
+      // 更新progress进度
+      const _p = limit((offsetPosi.value / fullPosi) * 100, 100, 0);
+      emit("changeProgress", _p);
     }
   }
 };
@@ -117,8 +177,6 @@ const onMouseUpDrag = (e: MouseEvent) => {
   } else {
     dragScale.value = "";
   }
-
-  // console.log("mouse up 进度百分比", progress.value);
 };
 
 const onMouseOverDrag = () => {
@@ -139,16 +197,16 @@ onUnmounted(() => {
 </script>
 
 <Style scoped lang="scss">
-.music-details-progress-bar-wrap {
-  width: 90%;
-  height: 16px;
+.music-details-progress-bar-wrap-r {
+  width: 100%;
+  height: 100%;
   // background-color: antiquewhite;
   margin-top: 0.5vw;
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  .progress-bar-all {
+  .progress-bar-all-r {
     width: 100%;
     height: 6px;
 
@@ -156,15 +214,58 @@ onUnmounted(() => {
     background-color: rgba(128, 128, 128, 0.314);
     cursor: pointer;
     position: relative;
-    .progress-bar-played {
+    .progress-bar-played-r {
       height: 100%;
       width: 0%;
       background-color: $theme-color;
+      pointer-events: none;
     }
   }
-  .progress-bar-btn {
+  .progress-bar-btn-r {
     position: absolute;
     left: 0px;
+    // top: -5px;
+    background-color: black;
+    @include bg-color-reverse($w-bg-color-reverse);
+    width: 6px;
+    height: 6px;
+    cursor: pointer;
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+}
+
+.music-details-progress-bar-wrap-c {
+  width: 100%;
+  height: 100%;
+  // background-color: antiquewhite;
+  // margin-top: 0.5vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .progress-bar-all-c {
+    width: 6px;
+    height: 100%;
+
+    overflow: visible;
+    background-color: rgba(128, 128, 128, 0.314);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    .progress-bar-played-c {
+      height: 0%;
+      width: 100%;
+      background-color: $theme-color;
+      pointer-events: none;
+    }
+  }
+  .progress-bar-btn-c {
+    position: absolute;
+    bottom: 0px;
     // top: -5px;
     background-color: black;
     @include bg-color-reverse($w-bg-color-reverse);

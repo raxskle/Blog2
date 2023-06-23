@@ -180,9 +180,11 @@ transition: transform 0.8s ease, color 0.2s ease, border 0.2s ease;
 
 ## 抽离组件：拖动框
 
-在播放进度条和音量条都需要复用这个组件
+在播放进度条和音量条都需要复用这个百分比拖动框组件
 
 组件内搞定所有样式和交互效果，
-父组件与其通信包括： progress 百分比
-父组件的 progress，wacth 它来控制 player 的进度
+父组件与其通过 progress 百分比数据通信，
+父组件通过 watch progress 来控制 player 的进度
 子组件通过 watch progress 来显示样式，同时拖动时 emit 修改 progress
+
+搞了两三个小时，拖动框组件的每个函数逻辑都要判断横向还是竖向分两种情况写，竖向的样式也完全重写，代码基本没得复用，代码量乘 2 ，感觉复用这个组件代价有点大。。。
