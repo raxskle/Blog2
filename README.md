@@ -140,3 +140,17 @@ hljs.configure({ languages: ["javascript"], ignoreUnescapedHTML: true });
 ## feat:搜索栏扩展搜索功能
 
 支持搜索文章标题和 tags，支持正则表达式搜索
+
+## feat:diary 页 header 无限翻页效果
+
+一个宽度 100vw 的框，内部放多页内容，不要使用 css 默认的 overflow: scroll，自己定义 mouse 事件和 touch 事件来控制内部多页内容的跟随事件滚动
+
+实现无限翻动的效果：类似于轮播图，在序列的两端加两页另一端的页面，在翻动到边缘页之后再静默跳转到另一端内容相同的页面，这样子可以是实现无限滚动。
+
+需要注意如果用户翻动过快，在翻到尽头还没来得及静默跳转页面时，用户再次翻动，依然可能回超出，需要在 mousedown 事件就进行判断是否在序列末尾，如果是的话此时及时跳转，移动端的话就是 touchstart 事件。
+
+## css transition 分别控制多个属性不同的过度
+
+transiton 一项，多个不同属性之间分别写完整，再用 , 分隔
+
+transition: transform 0.8s ease, color 0.2s ease, border 0.2s ease;

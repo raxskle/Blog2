@@ -26,7 +26,8 @@ defineProps<{
   .header-text {
     flex-shrink: 0;
     flex-grow: 1;
-    background-color: rgb(196, 255, 255);
+    // background-color: rgb(196, 255, 255);
+    background-color: white;
     display: flex;
     flex-direction: column;
 
@@ -48,7 +49,7 @@ defineProps<{
       width: fit-content;
       line-height: 1.2;
 
-      cursor: pointer;
+      // cursor: pointer;
       &::before {
         content: "";
         background-color: rgba(0, 0, 0, 0.6);
@@ -67,7 +68,7 @@ defineProps<{
       }
     }
     .header-post-digest {
-      width: 100%;
+      // width: 100%;
 
       overflow: hidden;
       text-overflow: ellipsis;
@@ -96,19 +97,24 @@ defineProps<{
   }
   .header-text {
     width: 100%;
-    height: 50%;
-    padding-top: 5vh;
+    height: 50vh;
+    padding-top: 10vh;
+    box-sizing: border-box;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     .header-post-title {
       font-size: 30px;
       margin-top: 20px;
       margin-bottom: 20px;
     }
+    .header-post-digest {
+      -webkit-line-clamp: 3 !important;
+      max-width: 80%;
+    }
   }
   .header-image {
     width: 100%;
-    height: 50%;
+    height: 50vh;
   }
 }
 
@@ -128,6 +134,9 @@ defineProps<{
       margin-top: 25px;
       margin-bottom: 25px;
     }
+    .header-post-digest {
+      max-width: 70%;
+    }
   }
   .header-image {
     width: 100%;
@@ -142,8 +151,8 @@ defineProps<{
   .header-text {
     width: 50%;
     height: 100%;
-    padding-top: 5vh;
-    justify-content: center;
+    padding-top: 35vh;
+    justify-content: flex-start;
     align-items: flex-start;
     .header-post-title {
       margin-top: 30px;
@@ -156,6 +165,7 @@ defineProps<{
   }
 }
 
+// title 字体
 @media screen and (min-width: 500px) and (max-width: 1000px) {
   .header-post-title {
     font-size: 40px;

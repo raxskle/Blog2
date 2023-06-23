@@ -6,7 +6,7 @@
           class="search-input-dom"
           v-model="searchText"
           @input="onInput"
-          placeholder="可搜索标题、文章内容和tags，支持正则表达式"
+          placeholder="搜索标题、文章和tags，支持正则"
         />
         <div class="search-input-btn" @click.self="() => emit('close')">X</div>
       </div>
