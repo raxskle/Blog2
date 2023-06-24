@@ -1,6 +1,7 @@
 <template>
-  <div class="music-player">
-    <div class="music-top-box">
+  <div class="music-player" @touchmove.prevent="">
+    <div v-show="showTopBox" class="music-top-box">
+      <div class="music-list-mode-mobile" @click="onClickChangeMode">{{ listMode }}</div>
       <div class="close-music-btn" @click="onClickClose">X</div>
       <div v-show="!showDetails" class="music-list">
         <div class="playlist-title">播放列表</div>
@@ -37,12 +38,22 @@
         </div>
         <div class="music-details-song-name">{{ currentSong.title }}</div>
         <div class="music-details-singer-name">{{ currentSong.artist }}</div>
-        <div class="music-details-progress-box">
-          <ProgressBar
-            :direction="'row'"
-            :progress="progress"
-            @changeProgress="changeProgress"
-          ></ProgressBar>
+        <div class="music-details-progress-wrap">
+          <div class="music-details-progress-box">
+            <ProgressBar
+              :direction="'row'"
+              :progress="progress"
+              @changeProgress="changeProgress"
+            ></ProgressBar>
+          </div>
+          <div class="music-details-progress-time-bar">
+            <div class="progress-time-current">
+              {{ isNaN(currentSong.time) ? "" : formatTime(currentSong.time * progress * 0.01) }}
+            </div>
+            <div class="progress-time-total">
+              {{ isNaN(currentSong.time) ? "" : formatTime(currentSong.time) }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -62,16 +73,18 @@
           ></ProgressBar>
         </div>
       </div>
-      <div class="music-btn music-prev-song">←</div>
+      <div class="music-btn music-prev-song" @click="onClickPrevSong">←</div>
       <div class="music-btn music-toggle" @click="togglePlay">{{ isPlaying ? "P" : "N" }}</div>
-      <div class="music-btn music-next-song">→</div>
-      <div class="music-btn music-list-mode">循</div>
+      <div class="music-btn music-next-song" @click="onClickNextSong">→</div>
+      <div class="music-btn music-list-mode" @click="onClickChangeMode">{{ listMode }}</div>
+      <div class="music-btn music-list-show-top" @click="onClickShowTop">收</div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import ProgressBar from "./ProgressBar.vue";
+import { formatTime } from "../../utils/formatTime";
 
 interface Song {
   _id: number;
@@ -211,7 +224,7 @@ watch(volume, (_v) => {
 
 const showVolumeCtrl = ref(false);
 // 目前的播放模式 1单曲循环，2列表循环，3随机播放
-// const listMode = ref(1);
+const listMode = ref(1);
 
 // audio player DOM
 const player = reactive(new Audio());
@@ -232,6 +245,7 @@ const loadSong = () => {
   player.src = currentSong.link; // 加载链接
   player.currentTime = 0; // 播放进度置零
   currentSong.time = player.duration; // 置时长
+  console.log("currentSong.time", player.duration);
 };
 
 // 切换currentSong歌曲
@@ -243,6 +257,7 @@ const chagneCurrentSong = (song: Song) => {
     currentSong.link = song.link;
     currentSong.time = song.time;
     currentSong.title = song.title;
+    console.log("new current song", currentSong._id);
   }
 };
 
@@ -254,6 +269,7 @@ onMounted(() => {
 // 播放时定时计算progress
 const progressInterval = () => {
   if (player.currentTime) {
+    currentSong.time = player.duration;
     progress.value = (player.currentTime / player.duration) * 100;
   }
 };
@@ -309,6 +325,65 @@ const onClickSonglistItem = (song: Song) => {
     play();
   }
 };
+
+// 点击播放上一首
+const onClickPrevSong = () => {
+  const currentIndex = songList.findIndex((song) => {
+    return song._id === currentSong._id;
+  });
+  const targetIndex = (currentIndex - 1 + songList.length) % songList.length;
+  console.log("song index", targetIndex);
+  chagneCurrentSong(songList[targetIndex]);
+  loadSong();
+  play();
+};
+
+// 点击播放上一首
+const onClickNextSong = () => {
+  const currentIndex = songList.findIndex((song) => {
+    return song._id === currentSong._id;
+  });
+  const targetIndex = (currentIndex + 1 + songList.length) % songList.length;
+  console.log("song index", targetIndex);
+  chagneCurrentSong(songList[targetIndex]);
+  loadSong();
+  play();
+};
+
+const showTopBox = ref(true);
+const onClickShowTop = () => {
+  showTopBox.value = !showTopBox.value;
+};
+
+player.onended = () => {
+  console.log("play ended");
+  pause();
+  if (listMode.value === 0) {
+    // 单曲循环
+    player.loop = true;
+    play();
+  } else if (listMode.value === 1) {
+    // 循环下一首
+    player.loop = false;
+    onClickNextSong();
+  } else if (listMode.value === 2) {
+    // 随机循环
+    player.loop = false;
+    let randomIndex = Math.floor(Math.random() * songList.length);
+    while (songList[randomIndex]._id === currentSong._id) {
+      randomIndex = Math.floor(Math.random() * songList.length);
+    }
+    chagneCurrentSong(songList[randomIndex]);
+    loadSong();
+    play();
+  }
+};
+
+// 修改列表播放模式
+const onClickChangeMode = () => {
+  listMode.value = (listMode.value + 1) % 3;
+  console.log("change mode", listMode.value);
+};
 </script>
 
 <style scoped lang="scss">
@@ -320,29 +395,28 @@ const onClickSonglistItem = (song: Song) => {
   // background-color: rgb(238, 150, 150);
   // border: 2px solid rgb(83, 83, 83);
   box-sizing: border-box;
-  border-radius: 14px;
+
   overflow: hidden;
   z-index: 20;
-  // box-shadow: 0px 0px 5px 4px $theme-color-light;
-  box-shadow: 6px 6px 6px 0.1px rgba(255, 49, 49, 0.2), -6px -6px 6px 0.1px rgba(238, 255, 49, 0.2);
-  // box-shadow: ;
-  // box-shadow: 10px 10px 5px 4px rgb(254, 99, 99);
-  // box-shadow: 0px 0px 5px 4px
-  //   linear-gradient(
-  //     360deg,
-  //     rgb(254, 99, 99) 0%,
-  //     rgb(251, 192, 80) 50%,
-  //     rgb(1, 190, 102) 80%,
-  //     rgb(44, 23, 84) 100%
-  //   );
 }
 
 .music-top-box {
   flex-grow: 1;
   width: 100%;
-  height: auto;
+  // height: auto;
   overflow: hidden;
   position: relative;
+  .music-list-mode-mobile {
+    position: absolute;
+    right: 40px;
+    top: 0px;
+    width: 30px;
+    height: 30px;
+    background-color: $theme-color;
+    cursor: pointer;
+    z-index: 3;
+  }
+
   .close-music-btn {
     position: absolute;
     right: 0px;
@@ -451,7 +525,7 @@ const onClickSonglistItem = (song: Song) => {
     // background-color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     position: relative;
     box-sizing: border-box;
@@ -467,8 +541,9 @@ const onClickSonglistItem = (song: Song) => {
       @include f-c;
     }
     .music-details-image {
-      height: 7vw;
-      width: 7vw;
+      height: 12vh;
+      width: 12vh;
+      aspect-ratio: 1;
       // background-color: red;
       // border: 2px solid black;
       @include border-full-color;
@@ -497,21 +572,47 @@ const onClickSonglistItem = (song: Song) => {
       }
     }
     .music-details-song-name {
-      margin-top: 0.6vw;
-      margin-bottom: 0.4vw;
+      margin-top: 1vh;
+      margin-bottom: 0.5vh;
       max-width: 60%;
       @include ellipse-n-line(1);
     }
     .music-details-singer-name {
       color: grey;
       font-family: "";
-      font-size: 14px;
-      max-width: 60%;
+      font-size: 13px;
+      max-width: 50%;
       @include ellipse-n-line(1);
     }
-    .music-details-progress-box {
-      width: 90%;
-      height: 16px;
+    .music-details-progress-wrap {
+      margin-top: 1vh;
+      width: 85%;
+      height: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+
+      .music-details-progress-box {
+        width: 100%;
+        max-width: 600px;
+        height: 16px;
+      }
+      .music-details-progress-time-bar {
+        height: 16px;
+        width: 100%;
+        // background-color: red;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .progress-time-current {
+          font-size: 10px;
+        }
+        .progress-time-total {
+          font-size: 10px;
+        }
+      }
     }
   }
 }
@@ -529,13 +630,17 @@ const onClickSonglistItem = (song: Song) => {
   box-sizing: border-box;
   user-select: none;
   @include bg-color($w-bg-color);
-  .music-btn {
+  > div {
     width: 30px;
     height: 30px;
     background-color: $theme-color-light;
-    @include f-c;
+    display: flex;
     cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
+
   .music-volume {
     position: relative;
     z-index: 3;
@@ -561,27 +666,57 @@ const onClickSonglistItem = (song: Song) => {
 }
 
 // 移动端
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 800px) {
   .music-player {
     right: 0px;
     bottom: 0px;
-    width: 100vw;
-    height: 80px;
+    width: 100%;
+
+    box-shadow: 0px 0px 8px 1px rgba(128, 128, 128, 0.342);
+  }
+  .music-top-box {
+    height: 35vh;
+    max-height: 260px;
+    min-height: 210px;
+  }
+  .music-list-mode {
+    display: none !important;
+  }
+  .music-list-show-top {
+    display: flex !important;
+  }
+  .music-list-mode-mobile {
+    @include f-c;
   }
 }
 
 // pc端
-@media screen and (min-width: 950px) {
+@media screen and (min-width: 800px) {
   .music-player {
     right: 65px;
     bottom: 20px;
     width: 24vw;
-    height: 26vw;
 
-    max-width: 330px;
-    min-width: 240px;
-    max-height: 340px;
-    min-height: 300px;
+    max-width: 320px;
+    min-width: 260px;
+
+    border-radius: 14px;
+    box-shadow: 4px 4px 8px 0.1px rgba(218, 42, 42, 0.2),
+      -4px -4px 8px 0.1px rgba(205, 220, 40, 0.2);
+  }
+  .music-top-box {
+    height: 35vh;
+    max-height: 260px;
+    min-height: 210px;
+  }
+  .music-list-mode {
+    display: flex !important;
+  }
+  .music-list-show-top {
+    display: none !important;
+  }
+  .music-list-mode-mobile {
+    display: none;
   }
 }
 </style>

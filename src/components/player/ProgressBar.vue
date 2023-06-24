@@ -4,11 +4,13 @@
       'music-details-progress-bar-wrap-r': direction !== 'column',
       'music-details-progress-bar-wrap-c': direction === 'column'
     }"
+    @touchmove.prevent=""
   >
     <div
       @mousedown="onMouseDownDrag"
       @mouseover="onMouseOverDrag"
       @mouseleave="onMouseLeaveDrag"
+      @touchstart="onTouchStartDrag"
       ref="progressBar"
       :class="{
         'progress-bar-all-r': direction !== 'column',
@@ -50,7 +52,7 @@ const { progress, direction } = toRefs(props);
 
 const emit = defineEmits(["changeProgress"]);
 // 进度条相关：
-
+const touching = ref(false);
 // 进度条ref，用来获取进度条px长度
 const progressBar = ref();
 // 进度条拖动ref
@@ -76,7 +78,7 @@ const playedStyle = computed(() => {
   if (direction.value === "column") {
     return `height: ${progress.value}%;`;
   } else {
-    return `width: ${progress.value}%;`;
+    return `width: ${progress.value - 1}%;`;
   }
 });
 
@@ -105,8 +107,14 @@ watch(progress, (newProgress) => {
 
 // 按钮的位置范围是[0, 进度条-16]
 const onMouseDownDrag = (e: MouseEvent) => {
+  console.log("mouse down");
+  console.dir(e.clientX);
+  if (touching.value) {
+    return;
+  }
   if (direction.value === "column") {
     // 标记正在拖动，标记开始时鼠标和按钮的px位置
+
     isDraging.value = true;
     startX.value = e.clientY;
     clientX.value = e.clientY;
@@ -120,6 +128,7 @@ const onMouseDownDrag = (e: MouseEvent) => {
     offsetPosi.value = startPosi.value;
   } else if (direction.value === "row") {
     // 标记正在拖动，标记开始时鼠标和按钮的px位置
+
     isDraging.value = true;
     startX.value = e.clientX;
     clientX.value = e.clientX;
@@ -170,7 +179,107 @@ const onMouseMoveDrag = (e: MouseEvent) => {
   }
 };
 
+const onTouchStartDrag = (e: TouchEvent) => {
+  isDraging.value = true;
+  touching.value = true;
+  if (e.target == progressBar.value) {
+    dragScale.value = "scale(2)";
+  } else {
+    dragScale.value = "";
+  }
+
+  if (direction.value === "column") {
+    // 标记正在拖动，标记开始时鼠标和按钮的px位置
+    isDraging.value = true;
+    startX.value = e.touches[0].clientY;
+    clientX.value = e.touches[0].clientY;
+
+    let progressBarClientY = progressBar.value.getBoundingClientRect().top;
+    const _offsetY = e.touches[0].clientY - progressBarClientY;
+
+    const fullPosi = progressBar.value.clientHeight - btnHeight;
+    const _p = limit((1 - _offsetY / fullPosi) * 100, 100, 0);
+    emit("changeProgress", _p); // 这玩意儿居然是异步的
+    // 开始位置
+    startPosi.value = limit(fullPosi - _offsetY + btnHeight, fullPosi, 0);
+    // 将按钮移动到点击位置
+    offsetPosi.value = startPosi.value;
+  } else if (direction.value === "row") {
+    // 标记正在拖动，标记开始时鼠标和按钮的px位置
+    isDraging.value = true;
+    startX.value = e.touches[0].clientX;
+    clientX.value = e.touches[0].clientX;
+
+    let progressBarClientX = progressBar.value.getBoundingClientRect().left;
+    const _offsetX = e.touches[0].clientX - progressBarClientX;
+
+    const fullPosi = progressBar.value.clientWidth - btnWidth;
+    const _p = limit((_offsetX / fullPosi) * 100, 100, 0);
+    emit("changeProgress", _p); // 这玩意儿居然是异步的
+
+    // 开始位置
+    startPosi.value = limit(_offsetX - btnWidth / 2, fullPosi, 0);
+    // 将按钮移动到点击位置
+    offsetPosi.value = startPosi.value;
+  }
+};
+
+const onTouchMoveDrag = (e: TouchEvent) => {
+  console.log("touch move, isDraging:", isDraging.value);
+  if (!touching.value) {
+    return;
+  }
+  if (direction.value === "column") {
+    if (isDraging.value) {
+      e.preventDefault();
+      dragScale.value = "scale(2)";
+      // 更新拖动相对px
+      offsetX.value = -(e.touches[0].clientY - startX.value);
+
+      // 更新播放百分比和进度条位置
+      const fullPosi = progressBar.value.clientHeight - btnHeight;
+
+      // 更新按钮px位置
+      offsetPosi.value = limit(startPosi.value + offsetX.value, fullPosi, 0);
+      // 更新progress进度
+      const _p = limit((offsetPosi.value / fullPosi) * 100, 100, 0);
+      emit("changeProgress", _p);
+    }
+  } else {
+    if (isDraging.value) {
+      e.preventDefault();
+      dragScale.value = "scale(2)";
+      // 更新拖动相对px
+      offsetX.value = e.touches[0].clientX - startX.value;
+      // 更新播放百分比和进度条位置
+      const fullPosi = progressBar.value.clientWidth - btnWidth;
+
+      // 更新按钮px位置
+      offsetPosi.value = limit(startPosi.value + offsetX.value, fullPosi, 0);
+      // 更新progress进度
+      const _p = limit((offsetPosi.value / fullPosi) * 100, 100, 0);
+      emit("changeProgress", _p);
+    }
+  }
+};
+
+const onTouchEndDrag = (e: TouchEvent) => {
+  console.log("touch end");
+  touching.value = false;
+  isDraging.value = false;
+  if (e.target == progressBar.value) {
+    dragScale.value = "scale(2)";
+  } else {
+    dragScale.value = "";
+  }
+};
+
 const onMouseUpDrag = (e: MouseEvent) => {
+  if (touching.value) {
+    console.log("mouse up but touching");
+    return;
+  }
+  console.log("mouse up");
   isDraging.value = false;
   if (e.target == progressBar.value) {
     dragScale.value = "scale(2)";
@@ -187,6 +296,8 @@ const onMouseLeaveDrag = () => {
   dragScale.value = "";
 };
 
+document.addEventListener("touchmove", onTouchMoveDrag, { passive: false });
+document.addEventListener("touchend", onTouchEndDrag, { passive: false });
 document.addEventListener("mousemove", onMouseMoveDrag);
 document.addEventListener("mouseup", onMouseUpDrag);
 
@@ -246,7 +357,6 @@ onUnmounted(() => {
   align-items: center;
 
   .progress-bar-all-c {
-    width: 6px;
     height: 100%;
 
     overflow: visible;
@@ -269,11 +379,34 @@ onUnmounted(() => {
     // top: -5px;
     background-color: black;
     @include bg-color-reverse($w-bg-color-reverse);
-    width: 6px;
-    height: 6px;
+
     cursor: pointer;
     pointer-events: none;
     transition: transform 0.2s ease;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .music-details-progress-bar-wrap-c {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+  .progress-bar-all-c {
+    width: 10px;
+  }
+  .progress-bar-btn-c {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .progress-bar-all-c {
+    width: 6px;
+  }
+  .progress-bar-btn-c {
+    width: 6px;
+    height: 6px;
   }
 }
 </Style>

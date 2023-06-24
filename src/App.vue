@@ -1,11 +1,13 @@
 <template>
   <RouterView :key="key" />
+  <MusicBtn></MusicBtn>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import { RouterView } from "vue-router";
 import { useRoute } from "vue-router";
+import MusicBtn from "./components/tech/MusicBtn.vue";
 
 const route = useRoute();
 const key = computed(() => route.path + Math.random());
@@ -14,4 +16,3 @@ const key = computed(() => route.path + Math.random());
 </script>
 
 <style scoped lang="scss"></style>
-./store/tags-store

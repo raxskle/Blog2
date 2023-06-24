@@ -188,3 +188,54 @@ transition: transform 0.8s ease, color 0.2s ease, border 0.2s ease;
 子组件通过 watch progress 来显示样式，同时拖动时 emit 修改 progress
 
 搞了两三个小时，拖动框组件的每个函数逻辑都要判断横向还是竖向分两种情况写，竖向的样式也完全重写，代码基本没得复用，代码量乘 2 ，感觉复用这个组件代价有点大。。。
+
+### 解决移动端拖动框的适配， touch 事件模拟 offset
+
+pc 端的 mouse 事件对象 e 可以通过属性 e.clientX/Y 得到点击位置相对于视口的坐标， 属性 e.offsetX/Y 能得到点击位置相对于该元素左上角的偏移距离坐标。
+
+但是在移动端 touch 事件中，事件对象并没有提供 offsetX/Y 属性。
+
+首先，移动端事件对象 e 有几个属性能得到触摸 touch 信息，分别是：
+
+1. e.touches : 在手机上的所有触点信息
+
+2. e.changeTouches: 跟当前事件相关的所有触点信息
+
+3. e.targetTouches：作用在当前元素上的所有触点信息
+
+简单起见，这里直接使用 touches[0] 得到触摸信息 touch。
+
+触摸信息 touch 有以下几个关于位置坐标的属性：
+
+1. clientX Y 相对于视口的坐标
+
+2. pageX Y 相对于页面左上角原点的坐标
+
+3. screenX Y 相对于屏幕的坐标标
+
+这几个元素都并不能直接得到触摸位置相对于当前元素的偏移距离。
+
+想法是获得当前元素相对视口的距离，再与触摸位置相对视口的坐标相减。
+
+那么可以通过 e.target 或者直接获取当前 DOM 元素，通过 getBoundingClientRect() 得到相对视口的距离。
+
+如果一开始没想起 getBoundingClientRect() 这个方法也不要紧，e.target 存在 offsetTop 和 offsetLeft 属性。这两个属性可以得到当前元素的位置偏移，但是这个偏移并不是它相对于视口的偏移，而是相对于该子元素最近的进行过定位的父元素的偏移。而这个父元素可以通过 offsetParent 得到。
+
+而这个父元素也存在 offsetTop 和 offsetLeft 属性，递归下去最终的根元素的 offsetParent 属性为 null。
+
+那么我们只需要一路追踪所有的相对定位父元素，得到所有的 offset 偏移并相加，最终得到的就是当前元素相对根元素（也就等于相对视口 client）的偏移，记作 myOffset。
+
+那么将触摸位置相对于视口的坐标 clientX 与 myOffset 相减就能得到触摸位置相对于当前元素的偏移 offsetX。
+
+```
+  // const _clientY = progressBar.value.getBoundingClientRect().top;
+  let _clientY = 0;
+  let node = e.target;
+  while (node) {
+    _clientY += node.offsetTop;
+    node = node.offsetParent;
+  }
+  const offsetY = e.touches[0].clientY - _clientY;
+  console.log(offsetY);
+
+```
