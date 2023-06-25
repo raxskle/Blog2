@@ -127,6 +127,60 @@
   }
 }
 
+@mixin svg-font-color {
+  fill: $w-bg-color-t !important;
+  [data-theme="white"] & {
+    fill: $w-bg-color-t !important;
+  }
+  [data-theme="black"] & {
+    fill: $b-font-color-light !important;
+  }
+}
+
+@mixin svg-font-color-theme {
+  fill: $theme-color !important;
+  [data-theme="white"] & {
+    fill: $theme-color !important;
+  }
+  [data-theme="black"] & {
+    fill: $theme-color !important;
+  }
+}
+
+@mixin svg-path-100 {
+  > svg {
+    width: 100%;
+    height: 100%;
+    transition: all 0.1s;
+    > path {
+      @include svg-font-color;
+      transition: all 0.1s;
+    }
+    &:hover {
+      > path {
+        @include svg-font-color-theme;
+      }
+    }
+  }
+}
+
+@mixin svg-g-path-80 {
+  > svg {
+    width: 80%;
+    height: 80%;
+    transition: all 0.1s;
+    > g > path {
+      @include svg-font-color;
+      transition: all 0.1s;
+    }
+    &:hover {
+      > g > path {
+        @include svg-font-color-theme;
+      }
+    }
+  }
+}
+
 @mixin f-c {
   display: flex;
   flex-direction: column;

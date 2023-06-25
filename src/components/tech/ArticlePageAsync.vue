@@ -68,7 +68,17 @@
           class="fade-catalogue-btn"
           @click="onClickFadeCatalogue"
         >
-          {{ cataActive ? "→" : "←" }}
+          <!-- {{ cataActive ? "→" : "←" }} -->
+          <img
+            v-if="cataActive"
+            class="fade-catalogue-btn-img"
+            src="/icons/arrow-right-svgrepo-com.svg"
+          />
+          <img
+            v-if="!cataActive"
+            class="fade-catalogue-btn-img"
+            src="/icons/arrow-left-svgrepo-com.svg"
+          />
         </div>
       </SettingBar>
     </div>
@@ -276,6 +286,7 @@ onUnmounted(() => {
   .post-tags {
     margin-top: 10px;
     font-style: italic;
+    // background-color: #494949;
     .tag-link {
       cursor: pointer;
       &:hover {
@@ -378,6 +389,15 @@ onUnmounted(() => {
   @include bg-color-reverse($w-bg-color-reverse);
   @include font-color-reverse($w-font-color-reverse);
   @include f-c;
+  transition: all 0.2s;
+  &:hover {
+    background-color: $theme-color;
+  }
+  .fade-catalogue-btn-img {
+    width: 75%;
+    height: 75%;
+    transition: all 0.2s;
+  }
 }
 
 @media screen and (max-width: 950px) {

@@ -5,6 +5,7 @@ import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/",
   plugins: [vue()],
   resolve: {
     alias: {
@@ -24,7 +25,7 @@ export default defineConfig({
   },
   server: {
     // host: "127.0.0.1",
-    host: "10.21.207.126",
+    host: "10.11.183.141",
     port: 8082,
     open: true
   }

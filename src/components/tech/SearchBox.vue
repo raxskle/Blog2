@@ -8,7 +8,22 @@
           @input="onInput"
           placeholder="搜索标题、文章和tags，支持正则"
         />
-        <div class="search-input-btn" @click.self="() => emit('close')">X</div>
+        <div class="search-input-btn" @click="() => emit('close')">
+          <svg
+            width="800px"
+            height="800px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
+              fill="#000000"
+            />
+          </svg>
+        </div>
       </div>
       <div class="result-wrap">
         <div class="result-no" v-if="resultList.post.length === 0 && resultList.tags.length === 0">
@@ -21,7 +36,9 @@
           :key="post.id"
           @click="onClickToPost(post.id)"
         >
-          <div class="res-post-icon">P</div>
+          <div class="res-post-icon">
+            <img class="res-icon-img" src="/icons/file-1-svgrepo-com.svg" />
+          </div>
           <div class="res-post-value">
             <div class="res-title">{{ post.title }}</div>
             <div class="res-content">{{ post.content }}</div>
@@ -34,7 +51,9 @@
           :key="tag"
           @click="onClickToTags(tag)"
         >
-          <div class="res-tag-icon">T</div>
+          <div class="res-tag-icon">
+            <img class="res-icon-img" src="/icons/price-tag-svgrepo-com.svg" />
+          </div>
           <div class="res-tag-value">
             {{ tag }}
           </div>
@@ -129,11 +148,12 @@ function onClickToTags(tag: string) {
   }
   .search-input-btn {
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     margin-right: 10px;
-    background-color: $theme-color;
+    // background-color: $theme-color;
     @include f-c;
+    @include svg-path-100;
   }
 }
 
@@ -175,7 +195,7 @@ function onClickToTags(tag: string) {
     width: 30px;
     margin-left: 10px;
     margin-right: 10px;
-    background-color: yellow;
+    // background-color: yellow;
     @include f-c;
   }
   .res-post-value {
@@ -208,7 +228,7 @@ function onClickToTags(tag: string) {
     width: 30px;
     margin-left: 10px;
     margin-right: 10px;
-    background-color: yellow;
+    // background-color: yellow;
     @include f-c;
   }
   .res-tag-value {
@@ -236,5 +256,10 @@ function onClickToTags(tag: string) {
   .search-box {
     width: 500px;
   }
+}
+
+.res-icon-img {
+  width: 100%;
+  height: 100%;
 }
 </style>

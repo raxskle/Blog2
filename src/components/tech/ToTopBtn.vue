@@ -1,7 +1,9 @@
 <template>
   <Transition name="fade">
-    <div v-if="showToTop" class="to-top f-c" @click="moveToTop">
-      <div class="to-top-icon f-c">T</div>
+    <div v-if="showToTop" class="to-top" @click="moveToTop">
+      <div class="to-top-icon">
+        <img class="to-top-icon-img" src="/icons/rocket-svgrepo-com.svg" />
+      </div>
     </div>
   </Transition>
 </template>
@@ -43,12 +45,23 @@ onUnmounted(() => {
   // position: absolute;
   // right: 0px;
   // bottom: 0px;
+  @include f-c;
   @include bg-color-reverse($w-bg-color-reverse);
+  transition: all 0.2s;
+  &:hover {
+    background-color: $theme-color;
+  }
   cursor: pointer;
 }
 
 .to-top-icon {
-  @include font-color-reverse($w-font-color-reverse);
+  @include f-c;
+  // @include font-color-reverse($w-font-color-reverse);
+
+  .to-top-icon-img {
+    width: 85%;
+    height: 85%;
+  }
 }
 
 .fade-enter-active,

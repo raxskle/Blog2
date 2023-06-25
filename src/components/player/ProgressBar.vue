@@ -107,8 +107,8 @@ watch(progress, (newProgress) => {
 
 // 按钮的位置范围是[0, 进度条-16]
 const onMouseDownDrag = (e: MouseEvent) => {
-  console.log("mouse down");
-  console.dir(e.clientX);
+  // console.log("mouse down");
+  // console.dir(e.clientX);
   if (touching.value) {
     return;
   }
@@ -225,7 +225,7 @@ const onTouchStartDrag = (e: TouchEvent) => {
 };
 
 const onTouchMoveDrag = (e: TouchEvent) => {
-  console.log("touch move, isDraging:", isDraging.value);
+  // console.log("touch move, isDraging:", isDraging.value);
   if (!touching.value) {
     return;
   }
@@ -264,7 +264,7 @@ const onTouchMoveDrag = (e: TouchEvent) => {
 };
 
 const onTouchEndDrag = (e: TouchEvent) => {
-  console.log("touch end");
+  // console.log("touch end");
   touching.value = false;
   isDraging.value = false;
   if (e.target == progressBar.value) {
@@ -276,11 +276,11 @@ const onTouchEndDrag = (e: TouchEvent) => {
 
 const onMouseUpDrag = (e: MouseEvent) => {
   if (touching.value) {
-    console.log("mouse up but touching");
     return;
   }
-  console.log("mouse up");
-  isDraging.value = false;
+  if (isDraging.value) {
+    isDraging.value = false;
+  }
   if (e.target == progressBar.value) {
     dragScale.value = "scale(2)";
   } else {
@@ -302,6 +302,8 @@ document.addEventListener("mousemove", onMouseMoveDrag);
 document.addEventListener("mouseup", onMouseUpDrag);
 
 onUnmounted(() => {
+  document.removeEventListener("touchmove", onTouchMoveDrag);
+  document.removeEventListener("touchend", onTouchEndDrag);
   document.removeEventListener("mousemove", onMouseMoveDrag);
   document.removeEventListener("mouseup", onMouseUpDrag);
 });
@@ -336,8 +338,8 @@ onUnmounted(() => {
     position: absolute;
     left: 0px;
     // top: -5px;
-    background-color: black;
-    @include bg-color-reverse($w-bg-color-reverse);
+    // @include bg-color-reverse($w-bg-color-reverse);
+    background-color: $theme-color;
     width: 6px;
     height: 6px;
     cursor: pointer;
@@ -377,8 +379,8 @@ onUnmounted(() => {
     position: absolute;
     bottom: 0px;
     // top: -5px;
-    background-color: black;
-    @include bg-color-reverse($w-bg-color-reverse);
+
+    background-color: $theme-color;
 
     cursor: pointer;
     pointer-events: none;

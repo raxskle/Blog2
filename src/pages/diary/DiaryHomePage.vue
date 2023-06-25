@@ -57,6 +57,7 @@
 
     <div></div>
     <PageTail></PageTail>
+    <PopupBox :text="'网站更新中，很快回来~'" @callback="() => router.push('/tech')"></PopupBox>
   </main>
 </template>
 
@@ -64,8 +65,12 @@
 import PostItem from "@/components/diary/PostItem.vue";
 import PageTail from "@/components/PageTail.vue";
 import PostHeader from "@/components/diary/PostHeader.vue";
+import PopupBox from "@/components/PopupBox.vue";
 
 import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // 屏幕宽度
 const clientWidth = ref(window.innerWidth);
@@ -271,8 +276,12 @@ const onClickIcon = () => {
 };
 
 const onClickAbout = () => {
-  window.open("https://blog.raxskle.fun/tech");
+  // window.open("https://blog.raxskle.fun/tech");
+  router.push("/tech");
 };
+
+// 修改主题为white
+document.documentElement.setAttribute("data-theme", "white");
 </script>
 
 <style scoped lang="scss">

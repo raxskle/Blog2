@@ -1,13 +1,17 @@
 <template>
-  <div class="navContainer">
-    <div class="navIcon" @click="onClickToHome">
-      <img class="navIconImg" src="/images/mie.png" />
+  <div class="nav-container">
+    <div class="nav-icon" @click="onClickToHome">
+      <img class="nav-icon-img" src="/images/mie.png" />
     </div>
-    <div class="nav toDaily">游牧人</div>
-    <div class="nav toAbout">关于我</div>
-    <div class="navBtn">
-      <div class="searchBtn" @click="openSearch">S</div>
-      <div class="changeThemeBtn" @click="onClickChangeTheme">C</div>
+    <div class="nav to-daily" @click="onClickToDiary">游牧人</div>
+    <div class="nav to-about">关于我</div>
+    <div class="nav-btn">
+      <div class="search-btn" @click="openSearch">
+        <img class="search-btn-img" src="/icons/magnifying-glass-svgrepo-com.svg" />
+      </div>
+      <div class="change-theme-btn" @click="onClickChangeTheme">
+        <img class="change-themt-btn-img" src="/icons/sun-svgrepo-com.svg" />
+      </div>
     </div>
   </div>
 
@@ -26,10 +30,11 @@ const onClickChangeTheme = () => {
   theme.value = theme.value === "white" ? "black" : "white";
   // 通过setAttribute设置data-theme主题进行切换
   setTheme(theme.value);
-  // console.log("theme", theme.value);
 };
 
+// console.log("mount top nav");
 // 从本地获取保存的主题，否则默认白色主题
+// 每次进入tech都会挂载nav，所以每次进入都会设置主题
 const localTheme = localStorage.getItem("color-theme");
 if (localTheme) {
   setTheme(localTheme);
@@ -58,9 +63,14 @@ const openSearch = () => {
 const closeSearch = () => {
   showSearch.value = false;
 };
+
+// 点击去diary
+const onClickToDiary = () => {
+  router.push("/diary");
+};
 </script>
 <style scoped lang="scss">
-.navContainer {
+.nav-container {
   width: 100vw;
   height: 60px;
   position: fixed;
@@ -95,13 +105,13 @@ const closeSearch = () => {
   }
 }
 
-.navIcon {
+.nav-icon {
   position: absolute;
   height: 40px;
   width: 40px;
   user-select: none;
   cursor: pointer;
-  .navIconImg {
+  .nav-icon-img {
     width: 100%;
     height: 100%;
     user-select: none;
@@ -165,49 +175,67 @@ const closeSearch = () => {
   }
 }
 
-.navBtn {
+.nav-btn {
   position: absolute;
 
   @include f-r;
 
-  .searchBtn {
-    width: 28px;
-    height: 28px;
+  .search-btn {
+    width: 30px;
+    height: 30px;
     margin-right: 20px;
-    background-color: $theme-color;
+    border-radius: 4px;
+    // background-color: $theme-color;
     cursor: pointer;
     @include f-c;
+    transition: all 0.2s;
+    &:hover {
+      background-color: $theme-color-light;
+    }
+    .search-btn-img {
+      width: 70%;
+      height: 70%;
+    }
   }
 }
 
-.changeThemeBtn {
-  background-color: $theme-color;
+.change-theme-btn {
+  // background-color: $theme-color;
   cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 4px;
+  &:hover {
+    background-color: $theme-color-light;
+  }
+  .change-themt-btn-img {
+    width: 80%;
+    height: 80%;
+  }
 }
 
 @media screen and (max-width: 500px) {
-  .navIcon {
+  .nav-icon {
     left: 10px;
   }
-  .navBtn {
+  .nav-btn {
     right: 0px;
   }
-  .changeThemeBtn {
+  .change-theme-btn {
     display: none;
   }
 }
 
 @media screen and (min-width: 500px) {
-  .navIcon {
+  .nav-icon {
     left: 20px;
   }
-  .navBtn {
+  .nav-btn {
     right: 20px;
   }
-  .changeThemeBtn {
+  .change-theme-btn {
     @include f-c;
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
   }
 }
 </style>

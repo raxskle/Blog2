@@ -57,8 +57,8 @@ import { useTags } from "@/store/tags-store";
 
 const route = useRoute();
 const router = useRouter();
-
-console.log("current page", route.params.page, route.query.page);
+// console.log("route in tech home", route.fullPath);
+// console.log("current page", route.params.page, route.query.page);
 
 if (!route.params.page && !route.query.page) {
   // 如果没有页数
