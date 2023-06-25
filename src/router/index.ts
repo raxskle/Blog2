@@ -16,42 +16,42 @@ const router = createRouter({
       children: [
         {
           // 根路由，直接去首页
-          path: "/",
-          redirect: "/tech/1",
+          path: "",
+          redirect: "/tech/1" + "?time=" + Date.now(),
           name: "toHome"
         },
         {
           // 首页，需要有page参数
-          path: "/tech/:page(\\d+)",
+          path: "tech/:page(\\d+)",
           name: "tech-home",
           component: TechHomePage
         },
         {
           // 缺少page参数，直接去首页
-          path: "/tech",
-          redirect: "/tech/1"
+          path: "tech",
+          redirect: "/tech/1" + "?time=" + Date.now()
         },
         {
           // tag页，根据标签筛选，需要带tag页数的query参数
-          path: "/tech/:tag",
+          path: "tech/:tag",
           name: "tech-tag",
           component: TechHomePage
         },
         {
           // tech 文章页
-          path: "/tech-article",
+          path: "tech-article",
           name: "tech-post",
           component: TechArticlePage
         },
         {
           // daily 首页
-          path: "/diary",
+          path: "diary",
           name: "diary-home",
           component: DiaryHomePage
         },
         {
           // 非法路由去404
-          path: "/:path(.*)",
+          path: ":path(.*)",
           redirect: "/404"
         }
       ]

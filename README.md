@@ -239,3 +239,15 @@ pc 端的 mouse 事件对象 e 可以通过属性 e.clientX/Y 得到点击位置
   console.log(offsetY);
 
 ```
+
+## 2023/6/25 神奇的 nginx 缓存问题
+
+之前一时脑子抽了，给所有返回的静态资源都添加了缓存响应头 Cache-Control: max-age=600000
+
+后来去掉了，宝塔面板里设置 Cache-Control: no-cache, no-store, must-revalidate，还把浏览器清除了一遍缓存。但是缓存依旧存在，缓存不知道被存到了哪里，可能存到了虚空中。
+
+甚至宝塔面板里把网站停止运行，其它没有缓存的 url 都变成了 502，唯独这个缓存的 https://blog.raxskle.fun/tech/1 依旧能返回东西。。。
+
+发现响应头中 X-cache 值为 HIT，估计是 nginx 缓存了这个 url，放弃折腾
+
+想到一个办法，直接在 url 的 querystring 带一个时间戳，这样每次访问就都能避免缓存了

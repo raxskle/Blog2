@@ -62,7 +62,7 @@ const router = useRouter();
 
 if (!route.params.page && !route.query.page) {
   // 如果没有页数
-  router.push("/404");
+  router.push("/tech");
 }
 
 const tag = route.params.tag ? route.params.tag.toString() : "all";
@@ -90,7 +90,7 @@ const currentPage = computed(() => {
 // url输入页数 大于 总页数，自动跳转第一页
 watch(totalPageNum, (newVal) => {
   if (currentPage.value > newVal) {
-    router.push("/tech/1");
+    router.push("/tech");
   }
 });
 

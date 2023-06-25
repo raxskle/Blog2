@@ -181,6 +181,16 @@
   }
 }
 
+@mixin side-btn {
+  background-color: $w-bg-color-reverse;
+  [data-theme="white"] & {
+    background-color: $w-bg-color-reverse;
+  }
+  [data-theme="black"] & {
+    background-color: $b-bg-color-reverse;
+  }
+}
+
 @mixin f-c {
   display: flex;
   flex-direction: column;

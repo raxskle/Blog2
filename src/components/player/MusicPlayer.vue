@@ -605,10 +605,10 @@ const onClickChangeMode = () => {
   position: relative;
   .music-list-mode-mobile {
     position: absolute;
-    right: 40px;
-    top: 5px;
-    width: 20px;
-    height: 20px;
+    right: 50px;
+    top: 8px;
+    width: 26px;
+    height: 26px;
     // background-color: $theme-color;
     cursor: pointer;
     z-index: 3;
@@ -620,13 +620,19 @@ const onClickChangeMode = () => {
   .close-music-btn {
     position: absolute;
     right: 8px;
-    top: 5px;
+    top: 8px;
     width: 20px;
     height: 20px;
     // background-color: $theme-color;
     @include f-c;
     cursor: pointer;
     z-index: 3;
+  }
+  @media screen and (max-width: 800px) {
+    .close-music-btn {
+      width: 26px;
+      height: 26px;
+    }
   }
 
   .music-list {
@@ -733,7 +739,7 @@ const onClickChangeMode = () => {
     padding-top: 30px;
     .music-details-back {
       position: absolute;
-      top: 5px;
+      top: 8px;
       left: 8px;
       width: 20px;
       height: 20px;
@@ -741,6 +747,12 @@ const onClickChangeMode = () => {
       cursor: pointer;
       @include f-c;
       @include svg-path-100;
+    }
+    @media screen and (max-width: 800px) {
+      .music-details-back {
+        width: 26px;
+        height: 26px;
+      }
     }
     .music-details-image {
       height: 12vh;

@@ -46,7 +46,8 @@ onUnmounted(() => {
   // right: 0px;
   // bottom: 0px;
   @include f-c;
-  @include bg-color-reverse($w-bg-color-reverse);
+  // @include bg-color-reverse($w-bg-color-reverse);
+  @include side-btn;
   transition: all 0.2s;
   &:hover {
     background-color: $theme-color;

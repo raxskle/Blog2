@@ -203,6 +203,12 @@ h4 {
   cursor: pointer;
 }
 
+@media screen and (max-width: 600px) {
+  .md-content img {
+    max-width: 100%;
+  }
+}
+
 pre::-webkit-scrollbar {
   width: 5px;
   height: 5px;

@@ -49,7 +49,7 @@ function setTheme(_theme: string) {
 }
 
 const onClickToHome = () => {
-  router.push("/tech/1");
+  router.push("/tech");
 };
 
 const showSearch = ref(false);
@@ -185,7 +185,7 @@ const onClickToDiary = () => {
     height: 30px;
     margin-right: 20px;
     border-radius: 4px;
-    // background-color: $theme-color;
+    background-color: $b-bg-color-t;
     cursor: pointer;
     @include f-c;
     transition: all 0.2s;
@@ -204,6 +204,7 @@ const onClickToDiary = () => {
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 4px;
+  background-color: $b-bg-color-t;
   &:hover {
     background-color: $theme-color-light;
   }

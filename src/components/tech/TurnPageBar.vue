@@ -90,7 +90,7 @@ const showPagesNumList = computed((): string[] => {
 // 点击页数翻页
 const onClickTurnPage = (item: string) => {
   if (item != "...") {
-    router.push(`/tech/${item}`);
+    router.push(`/tech/${item}` + "?time=" + Date.now());
     // router.go(0);
   }
 };
@@ -98,13 +98,13 @@ const onClickTurnPage = (item: string) => {
 // 向前翻页
 const onClickFrontPage = () => {
   if (current.value > 1) {
-    router.push(`/tech/${current.value - 1}`);
+    router.push(`/tech/${current.value - 1}` + "?time=" + Date.now());
   }
 };
 // 向后翻页
 const onClickBackPage = () => {
   if (current.value < total.value) {
-    router.push(`/tech/${current.value + 1}`);
+    router.push(`/tech/${current.value + 1}` + "?time=" + Date.now());
   }
 };
 </script>
