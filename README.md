@@ -44,7 +44,7 @@ todos:
 
 ---
 
-[ ] music player，pc 端和移动端两个 UI，复用一下之前的原生 js 代码
+[ * ] music player，pc 端和移动端两个 UI，复用一下之前的原生 js 代码
 
 需要 UI 元素
 上一首按钮，播放/暂停，下一首按钮
@@ -52,6 +52,10 @@ todos:
 封面图，歌曲名，歌手名
 音量，模式，显示/隐藏播放列表
 播放列表
+
+---
+
+[ ] diary 文章页的样式
 
 ---
 
@@ -229,6 +233,7 @@ pc 端的 mouse 事件对象 e 可以通过属性 e.clientX/Y 得到点击位置
 
 ```
   // const _clientY = progressBar.value.getBoundingClientRect().top;
+  // 奇怪的做法又增加了 😋
   let _clientY = 0;
   let node = e.target;
   while (node) {

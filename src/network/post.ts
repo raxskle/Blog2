@@ -15,6 +15,7 @@ function getArticle(params: string) {
   });
 }
 
+// 根据分类来获取文章列表 "all"是所有tech， "diary"是所有diary
 function getBriefArticles(params: string) {
   console.log("http getBriefArticles", params);
   return new Promise<any>((resolve, reject) => {

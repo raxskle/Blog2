@@ -4,7 +4,8 @@
 $w-page-bg-color: rgb(250, 250, 250);
 $w-bg-color: rgb(255, 255, 255);
 $w-bg-color-reverse: rgb(218, 218, 218);
-$w-font-color: black;
+$w-font-color: rgb(48, 48, 48);
+// $w-font-color: rgb(0, 0, 0);
 $w-font-color-light: rgb(136, 136, 136);
 $w-font-color-reverse: rgb(255, 255, 255);
 $w-border-color: rgb(244, 244, 244);
@@ -20,7 +21,8 @@ $b-border-color: rgb(35, 35, 35);
 $b-bg-color-t: rgba(255, 255, 255, 0.6);
 
 $theme-color: rgb(233, 94, 94);
-$theme-color-light: rgba(232, 108, 108, 0.4);
+$theme-color-light: rgba(239, 124, 124, 0.4);
+$theme-color-light2: rgba(242, 106, 106, 0.25);
 $theme-color-deep: rgb(233, 60, 60);
 $theme-color-tag-light: rgba(226, 91, 91, 0.4);
 $theme-color-tag: rgba(227, 32, 32, 0.6);

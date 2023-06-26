@@ -14,28 +14,10 @@
         @touchend="onTouchEndSlider"
         @click.prevent=""
       >
-        <PostHeader
-          :time="'2023/6/23'"
-          :title="'标题标题2'"
-          :content="'一段文本一段文本一段文本一段文本一段文本'"
-        ></PostHeader>
-        <PostHeader
-          :time="'2023/6/23'"
-          :title="'标题标题1'"
-          :content="'一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本'"
-        >
-        </PostHeader>
-        <PostHeader
-          :time="'2023/6/23'"
-          :title="'标题标题2'"
-          :content="'一段文本一段文本一段文本一段文本一段文本'"
-        ></PostHeader>
-        <PostHeader
-          :time="'2023/6/23'"
-          :title="'标题标题1'"
-          :content="'一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本'"
-        >
-        </PostHeader>
+        <PostHeader :article="postList[0]"></PostHeader>
+        <PostHeader :article="postList[1]"> </PostHeader>
+        <PostHeader :article="postList[0]"></PostHeader>
+        <PostHeader :article="postList[1]"> </PostHeader>
       </div>
 
       <div class="header-page-num">
@@ -45,19 +27,26 @@
     </div>
 
     <div class="loop-wrap">
-      <PostItem :textOnRight="true"></PostItem>
-      <PostItem></PostItem>
-      <PostItem :textOnRight="true"></PostItem>
-      <PostItem></PostItem>
+      <PostItem
+        v-for="(post, index) in showPostList"
+        :key="post.id"
+        :article="post"
+        :textOnRight="index % 2 == 0"
+      ></PostItem>
 
-      <div ref="loadBtn" class="load-more-btn" :class="{ 'btn-show-up': showLoadBtn }">
+      <div
+        ref="loadBtn"
+        class="load-more-btn"
+        :class="{ 'btn-show-up': showLoadBtn }"
+        @click="showMore(4)"
+      >
         LOAD <b /> MORE
       </div>
     </div>
 
     <div></div>
     <PageTail></PageTail>
-    <PopupBox :text="'网站更新中，很快回来~'" @callback="() => router.push('/tech')"></PopupBox>
+    <!-- <PopupBox :text="'网站更新中，很快回来~'"></PopupBox> -->
   </main>
 </template>
 
@@ -65,13 +54,22 @@
 import PostItem from "@/components/diary/PostItem.vue";
 import PageTail from "@/components/PageTail.vue";
 import PostHeader from "@/components/diary/PostHeader.vue";
-import PopupBox from "@/components/PopupBox.vue";
+// import PopupBox from "@/components/PopupBox.vue";
 
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useGetDiaryAllPost, showMore } from "@/store/diary/index";
 
 const router = useRouter();
 
+// test
+const { postList, showPostList } = useGetDiaryAllPost();
+
+// 动效
+
+// 暂时放出一部分
+
+console.log(showPostList);
 // 屏幕宽度
 const clientWidth = ref(window.innerWidth);
 // console.log(clientWidth);

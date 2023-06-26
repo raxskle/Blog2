@@ -1,22 +1,49 @@
 <template>
   <div class="post-header">
     <div class="header-text">
-      <div class="header-post-info">{{ time }}</div>
-      <div class="header-post-title">{{ title }}</div>
-      <div class="header-post-digest">
-        {{ content }}
+      <div class="header-post-info">{{ article.time }}</div>
+      <div class="header-post-title" @click="onClickToArticlePage">{{ article.title }}</div>
+      <div class="header-post-digest" @click="onClickToArticlePage">
+        {{ article.content }}
       </div>
     </div>
-    <div class="header-image"></div>
+    <div class="header-image">
+      <img
+        v-show="article.hasImg"
+        class="header-image-img"
+        :src="article.hasImg ? article.coverImgUrl : '/images/diary-img1.jpg'"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  time: string;
-  title: string;
-  content: string;
-}>();
+import { useRouter } from "vue-router";
+
+const props = defineProps({
+  article: {
+    default: {
+      id: "",
+      class: "",
+      tags: "",
+      title: "",
+      content: "",
+      time: "",
+      hasImg: false,
+      coverImgUrl: ""
+    }
+  }
+});
+
+const router = useRouter();
+function onClickToArticlePage() {
+  router.push({
+    path: "/diary-article",
+    query: {
+      id: props.article.id
+    }
+  });
+}
 </script>
 <style scoped lang="scss">
 .post-header {
@@ -37,7 +64,7 @@ defineProps<{
 
     .header-post-title {
       @include ellipse-n-line(1);
-
+      cursor: pointer;
       z-index: 2;
       position: relative;
       width: fit-content;
@@ -63,7 +90,7 @@ defineProps<{
     }
     .header-post-digest {
       // width: 100%;
-
+      cursor: pointer;
       @include ellipse-n-line(4);
     }
   }
@@ -71,10 +98,18 @@ defineProps<{
   .header-image {
     flex-shrink: 0;
     flex-grow: 1;
-    // background-color: aquamarine;
+    user-select: none;
+    background-color: aquamarine;
     background-image: url("/images/diary-img1.jpg");
     background-position: center;
     background-size: cover;
+    .header-image-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      pointer-events: none;
+    }
   }
 }
 
@@ -91,9 +126,10 @@ defineProps<{
     align-items: center;
     justify-content: flex-start;
     .header-post-title {
-      font-size: 30px;
+      // font-size: 30px;
       margin-top: 20px;
       margin-bottom: 20px;
+      max-width: 90%;
     }
     .header-post-digest {
       -webkit-line-clamp: 3 !important;
@@ -118,7 +154,7 @@ defineProps<{
     align-items: center;
     justify-content: flex-start;
     .header-post-title {
-      font-size: 40px;
+      // font-size: 40px;
       margin-top: 25px;
       margin-bottom: 25px;
     }
@@ -154,21 +190,27 @@ defineProps<{
 }
 
 // title 字体
+@media screen and (max-width: 500px) {
+  .header-post-title {
+    font-size: 26px;
+  }
+}
+
 @media screen and (min-width: 500px) and (max-width: 1000px) {
   .header-post-title {
-    font-size: 40px;
+    font-size: 30px;
   }
 }
 
 @media screen and (min-width: 1000px) and (max-width: 1200px) {
   .header-post-title {
-    font-size: 42px;
+    font-size: 40px;
   }
 }
 
 @media screen and (min-width: 1200px) {
   .header-post-title {
-    font-size: 54px;
+    font-size: 50px;
   }
 }
 </style>

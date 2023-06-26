@@ -7,6 +7,7 @@ import router from "./router";
 import "./assets/md-content.scss";
 
 import "highlight.js/styles/github.css"; // 导入代码高亮样式
+// import "highlight.js/styles/a11y-dark.css"; // 导入代码高亮样式
 // import "highlight.js/styles/gradient-dark.css"; // 导入代码高亮样式
 
 import hljs from "highlight.js";

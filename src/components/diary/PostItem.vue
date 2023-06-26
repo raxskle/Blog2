@@ -6,28 +6,59 @@
     :style="{ flexDirection: postFlexDirection }"
   >
     <div class="post-item-text" :style="{ alignItems: postTextFlexDirecton }">
-      <div class="post-item-info">2023/6/23</div>
-      <div class="post-item-title">标题标题标题标题</div>
-      <div class="post-item-content">
-        一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本一段文本
+      <div class="post-item-info">{{ article.time }}</div>
+      <div class="post-item-title" @click="onClickToArticlePage">{{ article.title }}</div>
+      <div class="post-item-content" @click="onClickToArticlePage">
+        {{ article.content }}
       </div>
     </div>
     <div class="post-item-image">
-      <img class="post-item-image-img" src="/images/diary-img1.jpg" />
+      <img
+        v-show="article.hasImg"
+        class="post-item-image-img"
+        :src="article.hasImg ? article.coverImgUrl : '/images/diary-img1.jpg'"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, toRefs } from "vue";
-
+import { useRouter } from "vue-router";
 // textOnRight，样式 文字是否在右边，默认左边
-const props = defineProps<{
-  textOnRight?: boolean;
-}>();
+const props = defineProps({
+  article: {
+    default: {
+      id: "",
+      class: "",
+      tags: "",
+      title: "",
+      content: "",
+      time: "",
+      hasImg: false,
+      coverImgUrl: ""
+    }
+  },
+  textOnRight: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
+});
 
 const { textOnRight } = toRefs(props);
 
+const router = useRouter();
+function onClickToArticlePage() {
+  router.push({
+    path: "/diary-article",
+    query: {
+      id: props.article.id
+    }
+  });
+}
+
+// 动效
 const postFlexDirection = computed(() => {
   if (textOnRight.value) {
     return "row-reverse";
@@ -179,6 +210,10 @@ onUnmounted(() => {
   background-color: white;
   width: 50%;
   height: 100%;
+  background-color: aquamarine;
+  background-image: url("/images/diary-img1.jpg");
+  background-position: center;
+  background-size: cover;
 
   .post-item-image-img {
     width: 100%;
@@ -200,7 +235,7 @@ onUnmounted(() => {
     align-items: center !important;
 
     .post-item-title {
-      font-size: 30px;
+      font-size: 26px;
       margin-top: 1.5vh;
       margin-bottom: 1.5vh;
       max-width: 85%;
@@ -228,7 +263,7 @@ onUnmounted(() => {
     align-items: center !important;
 
     .post-item-title {
-      font-size: 36px;
+      font-size: 30px;
       margin-top: 2vh;
       margin-bottom: 2vh;
       max-width: 70%;

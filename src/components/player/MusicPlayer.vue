@@ -472,7 +472,7 @@ const progressInterval = () => {
 };
 
 // 定时器id
-let intervalId = 0;
+let intervalId: any = 0;
 
 const play = (_p?: number) => {
   // 播放

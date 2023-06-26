@@ -269,7 +269,7 @@ onUnmounted(() => {
   // width: 100%;
   font-size: 36px;
   margin-top: 50px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-weight: 900;
   // margin-left: 5vw;
 }
@@ -281,6 +281,7 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  margin-bottom: 10px;
   @include font-color-light($w-font-color-light);
 
   .post-tags {

@@ -66,7 +66,7 @@ h4 {
 .md-content h6 {
   font-size: 18px;
   width: 80%;
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 5px;
   position: relative;
   color: $theme-color-deep;
@@ -78,6 +78,9 @@ h4 {
   min-width: none;
   max-width: 100%;
   word-wrap: break-word;
+  line-height: 1.8;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .md-content hr {
@@ -92,20 +95,24 @@ h4 {
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  padding-left: 20px;
+  padding-left: 0px;
   margin-top: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   > li {
     align-items: flex-start;
     justify-content: flex-start;
     position: relative;
     margin-bottom: 8px;
-    padding-left: 14px;
+    padding-left: 20px;
     &::before {
       content: "▪ ";
       left: 0px;
+      top: 3px;
       position: absolute;
       color: rgb(233, 94, 94);
+    }
+    &::marker {
+      content: "";
     }
 
     > p {
@@ -113,7 +120,7 @@ h4 {
       align-items: flex-start;
       text-align: justify;
       text-justify: inter-ideograph;
-      margin-bottom: 4px;
+      // margin-bottom: 4px;
     }
   }
 }
@@ -122,26 +129,30 @@ h4 {
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: row;
-  padding-left: 40px;
+  padding-left: 30px;
   margin-top: 8px;
   margin-bottom: 8px;
   position: relative;
   counter-reset: sectioncounter;
-  > li:before {
+  > li::before {
     position: absolute;
-    left: 10px;
-
+    left: -25px;
+    top: 15px;
+    transform: translate(0%, -50%);
     color: rgb(233, 94, 94);
-    padding-left: 6px;
-    padding-right: 6px;
+    padding-left: 0px;
+    padding-right: 0px;
 
-    border-radius: 25%;
     content: counter(sectioncounter) ". ";
     counter-increment: sectioncounter;
   }
+  > li::marker {
+    content: "";
+  }
 
   > li {
-    margin-bottom: 8px;
+    position: relative;
+    margin-bottom: 5px;
     flex-direction: row;
   }
 }
@@ -166,19 +177,35 @@ h4 {
     margin-left: auto;
   }
   @media screen and (min-width: 800px) {
-    min-width: 60%;
+    min-width: 70%;
     max-width: 80%;
   }
 }
 
-.md-content code {
+.md-content pre code {
   // font-family: "NOTO SERIF SC SEMIBOLD";
   // font-family: "Noto Serif SC";
   font-family: "";
-  font-weight: 900;
+  font-weight: 800;
   padding: 4px;
   background-color: rgba(0, 0, 0, 0);
   overflow: scroll;
+  line-height: 1.6;
+}
+
+.md-content code {
+  font-family: "";
+  font-weight: bold;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 1px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  // border: 4px solid $theme-color;
+  background-color: $theme-color-light2;
+  line-height: 1.6;
 }
 
 .md-content blockquote {
@@ -217,4 +244,31 @@ pre::-webkit-scrollbar {
 code::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+}
+
+.md-content hr {
+  border-top: 2px solid rgba(128, 128, 128, 0.3);
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.diary-md-content img {
+  max-width: 100% !important;
+  width: 100% !important;
+  border-radius: 0px;
+}
+
+.diary-md-content p {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.diary-md-content h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 30px !important;
+  margin-bottom: 8px !important;
 }

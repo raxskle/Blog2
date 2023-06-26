@@ -4,6 +4,7 @@ import DiaryHomePage from "@/pages/diary/DiaryHomePage.vue";
 import TechArticlePage from "@/pages/tech/TechArticlePage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 import MainPage from "@/pages/MainPage.vue";
+import DiaryArticlePage from "@/pages/diary/DiaryArticlePage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,12 @@ const router = createRouter({
           path: "diary",
           name: "diary-home",
           component: DiaryHomePage
+        },
+        {
+          // daily 首页
+          path: "diary-article",
+          name: "diary-post",
+          component: DiaryArticlePage
         },
         {
           // 非法路由去404
