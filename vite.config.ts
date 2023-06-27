@@ -22,11 +22,11 @@ export default defineConfig({
         `
       }
     }
-  },
-  server: {
-    // host: "127.0.0.1",
-    host: "10.21.207.239",
-    port: 8082,
-    open: true
   }
+  // server: {
+  //   // host: "127.0.0.1",
+  //   host: "10.21.207.239",
+  //   port: 8082,
+  //   open: true
+  // }
 });

@@ -1,6 +1,6 @@
 <template>
   <Transition name="fade">
-    <div v-if="showToTop" class="to-top" @click="moveToTop">
+    <div v-show="showToTop" class="to-top" @click="moveToTop">
       <div class="to-top-icon">
         <img class="to-top-icon-img" src="/icons/rocket-svgrepo-com.svg" />
       </div>
@@ -73,6 +73,7 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: rotate(45deg) scale(0);
+  transform: rotate(90deg) scale(0);
+  -webkit-transform: rotate(90deg) scale(0);
 }
 </style>

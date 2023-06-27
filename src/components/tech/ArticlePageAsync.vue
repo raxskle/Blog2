@@ -60,7 +60,7 @@
         :posi="{
           // left: cataActive && articleCatalogueList.length > 0 ? '-40px' : '-50px',
           right: '10px',
-          position: 'absolute'
+          position: 'fixed'
         }"
       >
         <div

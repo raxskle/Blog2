@@ -40,7 +40,7 @@ todos:
 
 todos:
 
-[ ] 做一下 github actions，练一下 git 规范
+[ * ] 做一下 github actions，练一下 git 规范
 
 ---
 
@@ -55,7 +55,7 @@ todos:
 
 ---
 
-[ ] diary 文章页的样式
+[ * ] diary 文章页的样式
 
 ---
 

@@ -1,7 +1,9 @@
 <template>
   <main class="diary-page">
     <div class="top-left-nav" @click="onClickIcon">游牧人的文字</div>
-    <div class="top-right-about" @click="onClickAbout">A</div>
+    <div class="top-right-about" @click="onClickAbout">
+      <img class="top-right-about-img" src="/icons/globe-1-svgrepo-com.svg" />
+    </div>
     <div class="flickity-slider">
       <div
         class="flickity-all"
@@ -44,7 +46,6 @@
       </div>
     </div>
 
-    <div></div>
     <PageTail></PageTail>
     <!-- <PopupBox :text="'网站更新中，很快回来~'"></PopupBox> -->
   </main>
@@ -155,9 +156,9 @@ function onMouseUpSlider() {
       sliderX.value = -3 * clientWidth.value;
     }
     // 松手时判断是否切换
-    else if (sliderX.value - startX.value >= 150) {
+    else if (sliderX.value - startX.value >= 100) {
       sliderX.value = startX.value + clientWidth.value;
-    } else if (sliderX.value - startX.value <= -150) {
+    } else if (sliderX.value - startX.value <= -100) {
       sliderX.value = startX.value - clientWidth.value;
     } else {
       sliderX.value = startX.value;
@@ -219,9 +220,9 @@ function onTouchEndSlider() {
     sliderX.value = -3 * clientWidth.value;
   }
   // 松手时判断是否切换
-  else if (sliderX.value - startX.value >= 150) {
+  else if (sliderX.value - startX.value >= 100) {
     sliderX.value = startX.value + clientWidth.value;
-  } else if (sliderX.value - startX.value <= -150) {
+  } else if (sliderX.value - startX.value <= -100) {
     sliderX.value = startX.value - clientWidth.value;
   } else {
     sliderX.value = startX.value;
@@ -263,6 +264,10 @@ const onScrollLoadMore = () => {
 onMounted(() => {
   onScrollLoadMore();
   window.addEventListener("scroll", onScrollLoadMore);
+  // 必须在顶部
+  window.scrollTo({
+    top: 0
+  });
 });
 
 onUnmounted(() => {
@@ -343,6 +348,9 @@ document.documentElement.setAttribute("data-theme", "white");
   .flickity-slider {
     height: 100vh;
   }
+  .top-left-nav {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 500px) and (max-width: 1000px) {
@@ -395,33 +403,51 @@ document.documentElement.setAttribute("data-theme", "white");
 
 .top-left-nav {
   z-index: 100;
-  color: rgb(52, 52, 52);
+  color: rgb(0, 0, 0);
   writing-mode: vertical-lr;
   cursor: pointer;
   font-size: 16px;
+  background-color: rgba(230, 230, 230, 0.5);
+  // background-color: rgba(212, 187, 87, 0.3);
+  // box-sizing: border-box;
+  padding: 2px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
   transition: color 0.2s ease;
   &:hover {
-    color: rgb(129, 129, 129);
+    color: rgb(88, 88, 88);
   }
 }
 
 .top-right-about {
   z-index: 100;
 
-  background-color: $theme-color;
+  // background-color: $theme-color;
+  transition: all 0.2s;
+
+  cursor: pointer;
+  // @include bg-color-reverse($w-bg-color-reverse);
+  // &:hover {
+  //   background-color: $theme-color;
+  // }
 
   @include f-c;
   cursor: pointer;
+  .top-right-about-img {
+    width: 80%;
+    height: 80%;
+  }
 }
 
 @media screen and (max-width: 1000px) {
   .top-left-nav {
-    position: absolute;
+    position: fixed;
     top: 50px;
-    left: 26px;
+    left: 25px;
   }
   .top-right-about {
-    position: absolute;
+    position: fixed;
     width: 40px;
     height: 40px;
     right: 18px;
@@ -433,12 +459,12 @@ document.documentElement.setAttribute("data-theme", "white");
   .top-left-nav {
     position: fixed;
     top: 50px;
-    left: 26px;
+    left: 25px;
   }
   .top-right-about {
     position: fixed;
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     right: 18px;
     top: 50px;
   }

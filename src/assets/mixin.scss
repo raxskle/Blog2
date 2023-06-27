@@ -29,6 +29,16 @@
   }
 }
 
+@mixin bg-color-black-white {
+  background-color: black;
+  [data-theme="white"] & {
+    background-color: black;
+  }
+  [data-theme="black"] & {
+    background-color: white;
+  }
+}
+
 @mixin bg-color-t {
   background-color: $w-bg-color-t;
   [data-theme="white"] & {

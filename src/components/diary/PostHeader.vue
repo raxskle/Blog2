@@ -53,7 +53,6 @@ function onClickToArticlePage() {
   .header-text {
     flex-shrink: 0;
     flex-grow: 1;
-    // background-color: rgb(196, 255, 255);
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -99,7 +98,7 @@ function onClickToArticlePage() {
     flex-shrink: 0;
     flex-grow: 1;
     user-select: none;
-    background-color: aquamarine;
+    background-color: rgba(255, 255, 255, 0);
     background-image: url("/images/diary-img1.jpg");
     background-position: center;
     background-size: cover;

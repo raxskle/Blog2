@@ -169,7 +169,7 @@ onUnmounted(() => {
 }
 
 .post-item-text {
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(248, 248, 248);
   width: 50%;
   height: 100%;
   display: flex;

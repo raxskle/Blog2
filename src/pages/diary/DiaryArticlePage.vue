@@ -1,5 +1,6 @@
 <template>
   <main class="diary-post-page">
+    <div class="top-left-nav" @click="onClickIcon">游牧人的文字</div>
     <div class="post-header">
       <div class="header-text">
         <div class="header-post-info">{{ res.article.time }}</div>
@@ -15,6 +16,10 @@
     </div>
     <div class="post-content">
       <div v-highlight class="md-content diary-md-content" v-html="res.article.content"></div>
+    </div>
+
+    <div class="to-diary-home" @click="onClickToDiaryHome">
+      <img class="to-diary-home-img" src="/icons/house-svgrepo-com.svg" />
     </div>
     <PageTail></PageTail>
   </main>
@@ -52,6 +57,19 @@ onErrorCaptured((e) => {
   return true;
 });
 
+const onClickIcon = () => {
+  router.push("/diary");
+};
+
+// 进入页面必须在顶部
+window.scrollTo({
+  top: 0
+});
+
+const onClickToDiaryHome = () => {
+  router.push("/diary");
+};
+
 // 修改主题为white
 document.documentElement.setAttribute("data-theme", "white");
 </script>
@@ -66,6 +84,23 @@ document.documentElement.setAttribute("data-theme", "white");
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.top-left-nav {
+  z-index: 100;
+  color: rgb(52, 52, 52);
+  writing-mode: vertical-lr;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: rgba(90, 90, 90, 0.3);
+  // box-sizing: border-box;
+  padding: 2px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  transition: color 0.2s ease;
+  &:hover {
+    color: rgb(129, 129, 129);
+  }
 }
 
 .post-header {
@@ -120,6 +155,12 @@ document.documentElement.setAttribute("data-theme", "white");
     @include f-c;
     flex-direction: column-reverse;
   }
+  .top-left-nav {
+    // position: absolute;
+    // top: 50px;
+    // left: 25px;
+    display: none;
+  }
   .header-text {
     width: 100%;
     height: 30vh;
@@ -150,6 +191,11 @@ document.documentElement.setAttribute("data-theme", "white");
     @include f-c;
     flex-direction: column-reverse;
   }
+  .top-left-nav {
+    position: fixed;
+    top: 50px;
+    left: 25px;
+  }
   .header-text {
     width: 100%;
     height: 40%;
@@ -175,6 +221,11 @@ document.documentElement.setAttribute("data-theme", "white");
   .post-header {
     height: 100vh;
     @include f-r;
+  }
+  .top-left-nav {
+    position: fixed;
+    top: 50px;
+    left: 25px;
   }
   .header-text {
     width: 50%;
@@ -228,6 +279,27 @@ document.documentElement.setAttribute("data-theme", "white");
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+.to-diary-home {
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 130px;
+  right: 10px;
+  @include f-c;
+  @include side-btn;
+  transition: all 0.2s;
+
+  cursor: pointer;
+  @include bg-color-reverse($w-bg-color-reverse);
+  &:hover {
+    background-color: $theme-color;
+  }
+  .to-diary-home-img {
+    width: 70%;
+    height: 70%;
+  }
 }
 
 @media screen and (max-width: 500px) {

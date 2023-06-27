@@ -135,13 +135,15 @@ const onClickBackPage = () => {
   transition: all 0.2s;
   cursor: pointer;
   &:hover {
-    @include bg-color-reverse($w-bg-color-reverse);
+    // @include bg-color-reverse($w-bg-color-reverse);
+    @include bg-color-black-white;
     @include font-color-reverse($w-font-color-reverse);
   }
 }
 
 .target {
-  @include bg-color-reverse($w-bg-color-reverse);
+  // @include bg-color-reverse($w-bg-color-reverse);
+  @include bg-color-black-white;
   @include font-color-reverse($w-font-color-reverse);
 }
 </style>
