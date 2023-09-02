@@ -22,6 +22,18 @@ export default defineConfig({
         `
       }
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          console.log("id", id);
+          if (id.includes("node_modules")) {
+            return "node_modules";
+          }
+        }
+      }
+    }
   }
   // server: {
   //   // host: "127.0.0.1",

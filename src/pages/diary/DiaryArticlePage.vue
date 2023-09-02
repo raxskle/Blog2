@@ -1,6 +1,6 @@
 <template>
   <main class="diary-post-page">
-    <div class="top-left-nav" @click="onClickIcon">游牧人的文字</div>
+    <LogoText @onClickIcon="onClickIcon" />
     <div class="post-header">
       <div class="header-text">
         <div class="header-post-info">{{ res.article.time }}</div>
@@ -30,12 +30,13 @@ import { useDiaryGetPost, useGetDiaryAllPost } from "@/store/diary/index";
 import { onErrorCaptured, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import PageTail from "@/components/PageTail.vue";
+import LogoText from "@/components/diary/LogoText.vue";
 
 const route = useRoute();
 const router = useRouter();
 
-// 请求一次所有文章
-useGetDiaryAllPost();
+// 请求一次所有文章，得到所有文章
+const { postList } = useGetDiaryAllPost();
 
 // 从url路由得到postId
 const postId = route.query.id?.toString() || "";
@@ -84,23 +85,6 @@ document.documentElement.setAttribute("data-theme", "white");
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.top-left-nav {
-  z-index: 100;
-  color: rgb(52, 52, 52);
-  writing-mode: vertical-lr;
-  cursor: pointer;
-  font-size: 16px;
-  background-color: rgba(90, 90, 90, 0.3);
-  // box-sizing: border-box;
-  padding: 2px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  transition: color 0.2s ease;
-  &:hover {
-    color: rgb(129, 129, 129);
-  }
 }
 
 .post-header {
@@ -155,12 +139,7 @@ document.documentElement.setAttribute("data-theme", "white");
     @include f-c;
     flex-direction: column-reverse;
   }
-  .top-left-nav {
-    // position: absolute;
-    // top: 50px;
-    // left: 25px;
-    display: none;
-  }
+
   .header-text {
     width: 100%;
     height: 30vh;
@@ -191,11 +170,7 @@ document.documentElement.setAttribute("data-theme", "white");
     @include f-c;
     flex-direction: column-reverse;
   }
-  .top-left-nav {
-    position: fixed;
-    top: 50px;
-    left: 25px;
-  }
+
   .header-text {
     width: 100%;
     height: 40%;
@@ -222,11 +197,7 @@ document.documentElement.setAttribute("data-theme", "white");
     height: 100vh;
     @include f-r;
   }
-  .top-left-nav {
-    position: fixed;
-    top: 50px;
-    left: 25px;
-  }
+
   .header-text {
     width: 50%;
     height: 100%;

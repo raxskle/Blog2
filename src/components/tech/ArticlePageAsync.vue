@@ -353,12 +353,14 @@ onUnmounted(() => {
   }
 
   .cata-item-wrap {
-    width: 100%;
+    width: 90%;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    max-height: 42vh;
+    overflow-y: scroll;
     .cata-item {
       max-width: 90%;
       cursor: pointer;
@@ -379,6 +381,11 @@ onUnmounted(() => {
       color: $theme-color;
       border-left: 4px solid $theme-color;
     }
+  }
+
+  .cata-item-wrap::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
   }
 }
 
