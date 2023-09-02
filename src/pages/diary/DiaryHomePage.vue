@@ -1,6 +1,6 @@
 <template>
   <main class="diary-page">
-    <div class="top-left-nav" @click="onClickIcon">游牧人的文字</div>
+    <LogoText @onClickIcon="onClickIcon" />
     <div class="top-right-about" @click="onClickAbout">
       <img class="top-right-about-img" src="/icons/globe-1-svgrepo-com.svg" />
     </div>
@@ -56,8 +56,9 @@ import PostItem from "@/components/diary/PostItem.vue";
 import PageTail from "@/components/PageTail.vue";
 import PostHeader from "@/components/diary/PostHeader.vue";
 // import PopupBox from "@/components/PopupBox.vue";
+import LogoText from "@/components/diary/LogoText.vue";
 
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useGetDiaryAllPost, showMore } from "@/store/diary/index";
 
@@ -71,6 +72,11 @@ const { postList, showPostList } = useGetDiaryAllPost();
 // 暂时放出一部分
 
 console.log(showPostList);
+
+watch(postList, () => {
+  console.log(postList);
+});
+
 // 屏幕宽度
 const clientWidth = ref(window.innerWidth);
 // console.log(clientWidth);
@@ -348,9 +354,6 @@ document.documentElement.setAttribute("data-theme", "white");
   .flickity-slider {
     height: 100vh;
   }
-  .top-left-nav {
-    display: none;
-  }
 }
 
 @media screen and (min-width: 500px) and (max-width: 1000px) {
@@ -401,25 +404,6 @@ document.documentElement.setAttribute("data-theme", "white");
   transform: translateY(-5vh);
 }
 
-.top-left-nav {
-  z-index: 100;
-  color: rgb(0, 0, 0);
-  writing-mode: vertical-lr;
-  cursor: pointer;
-  font-size: 16px;
-  background-color: rgba(230, 230, 230, 0.5);
-  // background-color: rgba(212, 187, 87, 0.3);
-  // box-sizing: border-box;
-  padding: 2px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-  transition: color 0.2s ease;
-  &:hover {
-    color: rgb(88, 88, 88);
-  }
-}
-
 .top-right-about {
   z-index: 100;
 
@@ -441,11 +425,6 @@ document.documentElement.setAttribute("data-theme", "white");
 }
 
 @media screen and (max-width: 1000px) {
-  .top-left-nav {
-    position: fixed;
-    top: 50px;
-    left: 25px;
-  }
   .top-right-about {
     position: fixed;
     width: 40px;
@@ -456,11 +435,6 @@ document.documentElement.setAttribute("data-theme", "white");
 }
 
 @media screen and (min-width: 1000px) {
-  .top-left-nav {
-    position: fixed;
-    top: 50px;
-    left: 25px;
-  }
   .top-right-about {
     position: fixed;
     width: 40px;

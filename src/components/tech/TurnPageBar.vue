@@ -20,7 +20,7 @@
     >
       {{ item }}
     </div>
-    <div v-if="showPagesNumList.length == 0">暂无文章</div>
+    <div v-if="showPagesNumList.length == 0">文章记载中</div>
     <div v-if="showPagesNumList.length > 0" class="turn-page-btn f-c nums" @click="onClickBackPage">
       →
     </div>

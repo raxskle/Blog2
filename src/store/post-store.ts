@@ -45,7 +45,8 @@ function useGetAllPost(tag: string) {
       // tags转为数组 string -> string[]
       res[index].tags = res[index].tags.split(",").filter((tag: string) => tag !== "");
       // console.log(res[index].tags);
-      res[index].content.replace(/<img.*?>/, (s: string) =>
+      // 将img标签中的src提取，使用第一张图，如果改为 /<img.*?>/g 则使用最后一张图
+      res[index].content.replace(/<img.*?>/g, (s: string) =>
         s.replace(/src=".*?"/, (ss: string) => (_url = ss.slice(5, -1)))
       );
       if (_url !== "") {
